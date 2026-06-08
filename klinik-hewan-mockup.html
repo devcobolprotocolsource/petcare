@@ -1,0 +1,2889 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" >
+<meta name="viewport" content="width=device-width, initial-scale=1.0" >
+<title>VetCare — Klinik Hewan Terpercaya</title>
+<meta name="description" content="Klinik hewan terpercaya untuk sahabat berbulu Anda. Vaksinasi, pemeriksaan, grooming, dan lebih banyak lagi." >
+<link rel="preconnect" href="https://fonts.googleapis.com" >
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin >
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet" >
+<script src="https://unpkg.com/lucide@0.383.0/dist/umd/lucide.js"></script>
+<style>
+/* ============================================================
+   DESIGN TOKENS
+   ============================================================ */
+:root {
+  --teal-950: #012A2A;
+  --teal-900: #023535;
+  --teal-800: #035252;
+  --teal-700: #047070;
+  --teal-600: #058888;
+  --teal-500: #06A6A6;
+  --teal-400: #2DC5C5;
+  --teal-300: #5ED4D4;
+  --teal-200: #A8E8E8;
+  --teal-100: #D4F4F4;
+  --teal-50:  #F0FAFA;
+
+  --amber-500: #F59E0B;
+  --amber-400: #FBBF24;
+  --amber-100: #FEF3C7;
+
+  --rose-500: #F43F5E;
+  --rose-100: #FFE4E6;
+
+  --green-500: #10B981;
+  --green-100: #D1FAE5;
+
+  --slate-900: #0F172A;
+  --slate-800: #1E293B;
+  --slate-700: #334155;
+  --slate-600: #475569;
+  --slate-500: #64748B;
+  --slate-400: #94A3B8;
+  --slate-300: #CBD5E1;
+  --slate-200: #E2E8F0;
+  --slate-100: #F1F5F9;
+  --slate-50:  #F8FAFC;
+  --white:     #FFFFFF;
+
+  --font-display: 'DM Serif Display', serif;
+  --font-head:    'Syne', sans-serif;
+  --font-body:    'DM Sans', sans-serif;
+
+  --radius-sm:  6px;
+  --radius-md:  12px;
+  --radius-lg:  18px;
+  --radius-xl:  24px;
+  --radius-2xl: 32px;
+
+  --shadow-sm: 0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.04);
+  --shadow-md: 0 4px 16px rgba(0,0,0,.08), 0 2px 6px rgba(0,0,0,.05);
+  --shadow-lg: 0 12px 40px rgba(0,0,0,.12), 0 4px 12px rgba(0,0,0,.07);
+  --shadow-xl: 0 24px 64px rgba(0,0,0,.16);
+
+  --transition: .22s cubic-bezier(.4,0,.2,1);
+}
+
+/* ============================================================
+   RESET & BASE
+   ============================================================ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--slate-800);
+  background: var(--slate-50);
+  overflow-x: hidden;
+}
+a { text-decoration: none; color: inherit; }
+button { cursor: pointer; border: none; background: none; font-family: inherit; }
+ul { list-style: none; }
+img { display: block; max-width: 100%; }
+svg { display: inline-block; flex-shrink: 0; }
+
+/* ============================================================
+   VIEW SWITCHER (TAB BAR AT TOP)
+   ============================================================ */
+#view-switcher {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 9999;
+  background: var(--slate-900);
+  display: flex; align-items: center; gap: 4px;
+  padding: 8px 16px;
+  box-shadow: 0 2px 12px rgba(0,0,0,.4);
+}
+#view-switcher span {
+  font-family: var(--font-head);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--slate-500);
+  margin-right: 8px;
+}
+.vs-btn {
+  font-family: var(--font-head);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .04em;
+  padding: 5px 14px;
+  border-radius: 20px;
+  color: var(--slate-400);
+  transition: var(--transition);
+  border: 1px solid transparent;
+}
+.vs-btn:hover { color: var(--white); background: rgba(255,255,255,.06); }
+.vs-btn.active {
+  background: var(--teal-600);
+  color: var(--white);
+  border-color: var(--teal-500);
+}
+
+/* ============================================================
+   VIEWS
+   ============================================================ */
+.view { display: none; padding-top: 44px; }
+.view.active { display: block; }
+
+/* ============================================================
+   SHARED DASHBOARD LAYOUT
+   ============================================================ */
+.dash-layout {
+  display: flex; min-height: calc(100vh - 44px);
+}
+.sidebar {
+  width: 240px;
+  flex-shrink: 0;
+  background: var(--teal-950);
+  color: var(--white);
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: 44px;
+  height: calc(100vh - 44px);
+  overflow-y: auto;
+}
+.sidebar-logo {
+  padding: 24px 20px 16px;
+  border-bottom: 1px solid rgba(255,255,255,.07);
+}
+.sidebar-logo .logo-mark {
+  display: flex; align-items: center; gap: 10px;
+}
+.sidebar-logo .logo-icon {
+  width: 36px; height: 36px;
+  background: var(--teal-600);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+}
+.sidebar-logo .logo-text strong {
+  font-family: var(--font-head);
+  font-size: 16px;
+  font-weight: 800;
+  display: block;
+  letter-spacing: .02em;
+}
+.sidebar-logo .logo-text span {
+  font-size: 11px;
+  color: var(--teal-300);
+  letter-spacing: .04em;
+}
+.sidebar-user {
+  padding: 14px 20px;
+  display: flex; align-items: center; gap: 10px;
+  border-bottom: 1px solid rgba(255,255,255,.07);
+}
+.avatar {
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  background: var(--teal-700);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-head);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--teal-200);
+  flex-shrink: 0;
+}
+.sidebar-user .user-info strong { font-size: 13px; font-weight: 600; display: block; }
+.sidebar-user .user-info span { font-size: 11px; color: var(--teal-300); }
+.sidebar-nav {
+  flex: 1;
+  padding: 12px 10px;
+}
+.nav-section-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--teal-400);
+  padding: 8px 10px 4px;
+}
+.nav-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 10px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--slate-400);
+  transition: var(--transition);
+  cursor: pointer;
+  position: relative;
+}
+.nav-item:hover { background: rgba(255,255,255,.06); color: var(--white); }
+.nav-item.active {
+  background: var(--teal-800);
+  color: var(--white);
+}
+.nav-item .badge {
+  margin-left: auto;
+  background: var(--teal-500);
+  color: var(--white);
+  font-size: 10px;
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: 10px;
+}
+.sidebar-footer {
+  padding: 14px 10px;
+  border-top: 1px solid rgba(255,255,255,.07);
+}
+.dash-main {
+  flex: 1;
+  overflow-x: hidden;
+  background: var(--slate-100);
+}
+.dash-topbar {
+  background: var(--white);
+  border-bottom: 1px solid var(--slate-200);
+  padding: 0 28px;
+  height: 60px;
+  display: flex; align-items: center; justify-content: space-between;
+  position: sticky;
+  top: 44px;
+  z-index: 100;
+}
+.dash-topbar-left h1 {
+  font-family: var(--font-head);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--slate-900);
+}
+.dash-topbar-left p { font-size: 12px; color: var(--slate-500); margin-top: 1px; }
+.dash-topbar-right {
+  display: flex; align-items: center; gap: 12px;
+}
+.icon-btn {
+  width: 36px; height: 36px;
+  border-radius: var(--radius-sm);
+  background: var(--slate-100);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--slate-600);
+  transition: var(--transition);
+  position: relative;
+}
+.icon-btn:hover { background: var(--slate-200); color: var(--slate-900); }
+.icon-btn .dot {
+  position: absolute; top: 6px; right: 6px;
+  width: 7px; height: 7px;
+  background: var(--rose-500);
+  border-radius: 50%;
+  border: 2px solid var(--white);
+}
+.dash-content {
+  padding: 28px;
+}
+
+/* CARDS */
+.card {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--slate-200);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+.card-header {
+  padding: 18px 20px 14px;
+  display: flex; align-items: center; justify-content: space-between;
+  border-bottom: 1px solid var(--slate-100);
+}
+.card-header h3 {
+  font-family: var(--font-head);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--slate-900);
+}
+.card-body { padding: 20px; }
+
+/* STAT CARDS */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.stat-card {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--slate-200);
+  padding: 20px;
+  display: flex; align-items: flex-start; gap: 14px;
+  transition: var(--transition);
+}
+.stat-card:hover { box-shadow: var(--shadow-md); transform: translateY(-1px); }
+.stat-icon {
+  width: 44px; height: 44px;
+  border-radius: var(--radius-md);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.stat-icon.teal  { background: var(--teal-100);   color: var(--teal-700); }
+.stat-icon.amber { background: var(--amber-100);  color: var(--amber-500); }
+.stat-icon.rose  { background: var(--rose-100);   color: var(--rose-500); }
+.stat-icon.green { background: var(--green-100);  color: var(--green-500); }
+.stat-info .label { font-size: 12px; color: var(--slate-500); font-weight: 500; }
+.stat-info .value {
+  font-family: var(--font-head);
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--slate-900);
+  line-height: 1.1;
+  margin: 2px 0;
+}
+.stat-info .change {
+  font-size: 11px;
+  font-weight: 600;
+  display: flex; align-items: center; gap: 3px;
+}
+.change.up   { color: var(--green-500); }
+.change.down { color: var(--rose-500); }
+
+/* TABLES */
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; }
+thead th {
+  font-family: var(--font-head);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--slate-500);
+  padding: 10px 14px;
+  text-align: left;
+  background: var(--slate-50);
+  border-bottom: 1px solid var(--slate-200);
+}
+tbody td {
+  padding: 12px 14px;
+  font-size: 13px;
+  color: var(--slate-700);
+  border-bottom: 1px solid var(--slate-100);
+  vertical-align: middle;
+}
+tbody tr:last-child td { border-bottom: none; }
+tbody tr:hover td { background: var(--teal-50); }
+.td-name {
+  font-weight: 600;
+  color: var(--slate-900);
+  display: flex; align-items: center; gap: 8px;
+}
+
+/* BADGES */
+.badge-status {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+}
+.badge-status::before {
+  content: '';
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+.status-pending   { background: var(--amber-100); color: #B45309; }
+.status-confirmed { background: var(--teal-100);  color: var(--teal-700); }
+.status-done      { background: var(--green-100); color: #059669; }
+.status-waiting   { background: var(--amber-100); color: #B45309; }
+.status-active    { background: var(--teal-100);  color: var(--teal-700); }
+.status-low       { background: var(--rose-100);  color: var(--rose-500); }
+
+/* BUTTONS */
+.btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 8px 16px;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-head);
+  font-size: 13px;
+  font-weight: 600;
+  transition: var(--transition);
+  letter-spacing: .02em;
+}
+.btn-primary {
+  background: var(--teal-600);
+  color: var(--white);
+}
+.btn-primary:hover { background: var(--teal-700); box-shadow: 0 4px 14px rgba(5,136,136,.3); }
+.btn-outline {
+  background: transparent;
+  border: 1px solid var(--slate-300);
+  color: var(--slate-700);
+}
+.btn-outline:hover { border-color: var(--teal-500); color: var(--teal-700); background: var(--teal-50); }
+.btn-ghost {
+  background: transparent;
+  color: var(--teal-600);
+  font-size: 12px;
+  padding: 4px 8px;
+}
+.btn-ghost:hover { background: var(--teal-50); }
+.btn-sm { padding: 5px 12px; font-size: 12px; }
+.btn-danger { background: var(--rose-500); color: var(--white); }
+.btn-danger:hover { background: #E11D48; }
+
+/* GRID HELPERS */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+
+/* ============================================================
+   LANDING PAGE STYLES
+   ============================================================ */
+#view-landing { background: var(--white); }
+
+/* Navbar */
+.lp-nav {
+  position: sticky;
+  top: 44px;
+  z-index: 200;
+  background: rgba(255,255,255,.92);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--slate-200);
+  padding: 0 60px;
+  height: 68px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.lp-logo {
+  display: flex; align-items: center; gap: 10px;
+  font-family: var(--font-head);
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--teal-800);
+}
+.lp-logo .logo-pill {
+  background: var(--teal-600);
+  color: var(--white);
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 15px;
+}
+.lp-nav-links {
+  display: flex; align-items: center; gap: 32px;
+}
+.lp-nav-links a {
+  font-family: var(--font-head);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--slate-600);
+  transition: var(--transition);
+  letter-spacing: .02em;
+}
+.lp-nav-links a:hover { color: var(--teal-600); }
+.lp-nav-cta { display: flex; align-items: center; gap: 10px; }
+
+/* Hero */
+.hero {
+  background: linear-gradient(135deg, var(--teal-950) 0%, var(--teal-800) 50%, var(--teal-900) 100%);
+  min-height: 600px;
+  display: flex; align-items: center;
+  position: relative;
+  overflow: hidden;
+  padding: 80px 60px;
+}
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+.hero::after {
+  content: '';
+  position: absolute;
+  right: -100px; top: -100px;
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(6,166,166,.18) 0%, transparent 70%);
+  border-radius: 50%;
+}
+.hero-content {
+  max-width: 600px;
+  position: relative; z-index: 1;
+}
+.hero-tag {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: rgba(255,255,255,.1);
+  border: 1px solid rgba(255,255,255,.15);
+  border-radius: 20px;
+  padding: 5px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--teal-200);
+  margin-bottom: 24px;
+  letter-spacing: .04em;
+}
+.hero h1 {
+  font-family: var(--font-display);
+  font-size: 58px;
+  line-height: 1.1;
+  color: var(--white);
+  margin-bottom: 20px;
+}
+.hero h1 em { color: var(--teal-300); font-style: italic; }
+.hero p {
+  font-size: 17px;
+  color: rgba(255,255,255,.7);
+  line-height: 1.7;
+  margin-bottom: 36px;
+  max-width: 480px;
+}
+.hero-btns { display: flex; gap: 12px; flex-wrap: wrap; }
+.hero-btns .btn-hero-primary {
+  background: var(--teal-400);
+  color: var(--teal-950);
+  font-family: var(--font-head);
+  font-size: 15px;
+  font-weight: 700;
+  padding: 14px 28px;
+  border-radius: var(--radius-md);
+  display: inline-flex; align-items: center; gap: 8px;
+  transition: var(--transition);
+}
+.hero-btns .btn-hero-primary:hover { background: var(--teal-300); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(6,166,166,.35); }
+.hero-btns .btn-hero-outline {
+  background: transparent;
+  color: var(--white);
+  border: 1.5px solid rgba(255,255,255,.3);
+  font-family: var(--font-head);
+  font-size: 15px;
+  font-weight: 600;
+  padding: 14px 28px;
+  border-radius: var(--radius-md);
+  display: inline-flex; align-items: center; gap: 8px;
+  transition: var(--transition);
+}
+.hero-btns .btn-hero-outline:hover { border-color: rgba(255,255,255,.7); background: rgba(255,255,255,.08); }
+.hero-stats {
+  display: flex; gap: 40px;
+  margin-top: 48px;
+}
+.hero-stat .num {
+  font-family: var(--font-head);
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--white);
+}
+.hero-stat .lbl { font-size: 12px; color: rgba(255,255,255,.55); margin-top: 2px; }
+
+/* Floating Card on Hero */
+.hero-float-card {
+  position: absolute;
+  right: 80px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255,255,255,.08);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: var(--radius-xl);
+  padding: 24px;
+  width: 280px;
+  z-index: 2;
+}
+.hero-float-card .fc-title {
+  font-family: var(--font-head);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--teal-200);
+  margin-bottom: 16px;
+  letter-spacing: .04em;
+}
+.fc-appt {
+  display: flex; align-items: center; gap: 12px;
+  background: rgba(255,255,255,.06);
+  border-radius: var(--radius-md);
+  padding: 12px;
+  margin-bottom: 10px;
+}
+.fc-appt .fc-icon {
+  width: 36px; height: 36px;
+  background: var(--teal-700);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+}
+.fc-appt .fc-info strong { font-size: 13px; color: var(--white); display: block; font-weight: 600; }
+.fc-appt .fc-info span  { font-size: 11px; color: var(--teal-300); }
+
+/* Section Layout */
+.lp-section {
+  padding: 80px 60px;
+}
+.lp-section-alt { background: var(--slate-50); }
+.section-label {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: var(--font-head);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--teal-600);
+  margin-bottom: 10px;
+}
+.section-title {
+  font-family: var(--font-display);
+  font-size: 40px;
+  line-height: 1.15;
+  color: var(--slate-900);
+  margin-bottom: 14px;
+}
+.section-title em { color: var(--teal-700); font-style: italic; }
+.section-sub {
+  font-size: 16px;
+  color: var(--slate-500);
+  max-width: 520px;
+  line-height: 1.7;
+}
+.section-header-flex {
+  display: flex; align-items: flex-end; justify-content: space-between;
+  margin-bottom: 48px;
+}
+
+/* Services */
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-top: 48px;
+}
+.service-card {
+  background: var(--white);
+  border: 1px solid var(--slate-200);
+  border-radius: var(--radius-lg);
+  padding: 28px;
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+.service-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--teal-500), var(--teal-300));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: var(--transition);
+}
+.service-card:hover::before { transform: scaleX(1); }
+.service-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-3px); border-color: var(--teal-200); }
+.service-icon {
+  width: 52px; height: 52px;
+  background: var(--teal-100);
+  border-radius: var(--radius-md);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--teal-700);
+  margin-bottom: 18px;
+}
+.service-card h4 {
+  font-family: var(--font-head);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--slate-900);
+  margin-bottom: 8px;
+}
+.service-card p { font-size: 13px; color: var(--slate-500); line-height: 1.6; }
+
+/* Doctors */
+.doctors-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+.doctor-card {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--slate-200);
+  overflow: hidden;
+  transition: var(--transition);
+  text-align: center;
+}
+.doctor-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-3px); }
+.doctor-photo {
+  height: 180px;
+  background: linear-gradient(135deg, var(--teal-700), var(--teal-500));
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-display);
+  font-size: 52px;
+  color: rgba(255,255,255,.25);
+}
+.doctor-info {
+  padding: 18px;
+}
+.doctor-info h4 {
+  font-family: var(--font-head);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--slate-900);
+}
+.doctor-info .spec {
+  font-size: 12px;
+  color: var(--teal-600);
+  font-weight: 600;
+  margin: 4px 0;
+}
+.doctor-info .exp { font-size: 12px; color: var(--slate-500); }
+
+/* Testimonials */
+.testi-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-top: 48px;
+}
+.testi-card {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--slate-200);
+  padding: 24px;
+  transition: var(--transition);
+}
+.testi-card:hover { box-shadow: var(--shadow-md); }
+.testi-stars { color: var(--amber-400); font-size: 14px; margin-bottom: 12px; display: flex; gap: 2px; }
+.testi-card p { font-size: 14px; color: var(--slate-600); line-height: 1.7; font-style: italic; margin-bottom: 16px; }
+.testi-author {
+  display: flex; align-items: center; gap: 10px;
+  border-top: 1px solid var(--slate-100);
+  padding-top: 14px;
+}
+.testi-author .av {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--teal-500), var(--teal-700));
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-head);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--white);
+  flex-shrink: 0;
+}
+.testi-author strong { font-size: 13px; font-weight: 700; display: block; }
+.testi-author span  { font-size: 11px; color: var(--slate-400); }
+
+/* Info Section */
+.info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: start;
+}
+.info-item {
+  display: flex; gap: 16px;
+  align-items: flex-start;
+  padding: 20px;
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--slate-200);
+  margin-bottom: 14px;
+}
+.info-item .ii-icon {
+  width: 42px; height: 42px;
+  background: var(--teal-100);
+  border-radius: var(--radius-md);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--teal-700);
+  flex-shrink: 0;
+}
+.info-item strong { font-size: 13px; font-weight: 700; display: block; color: var(--slate-900); margin-bottom: 4px; }
+.info-item span   { font-size: 13px; color: var(--slate-500); }
+.map-placeholder {
+  background: linear-gradient(135deg, var(--teal-800), var(--teal-950));
+  border-radius: var(--radius-xl);
+  height: 280px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--teal-300);
+  font-family: var(--font-head);
+  font-weight: 600;
+  font-size: 15px;
+  gap: 10px;
+  border: 1px solid var(--teal-700);
+}
+
+/* Blog */
+.blog-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+.blog-card {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--slate-200);
+  overflow: hidden;
+  transition: var(--transition);
+}
+.blog-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-3px); }
+.blog-img {
+  height: 140px;
+  background: linear-gradient(135deg, var(--teal-600), var(--teal-900));
+  position: relative;
+  display: flex; align-items: flex-end;
+  padding: 12px;
+}
+.blog-cat {
+  background: rgba(255,255,255,.2);
+  color: var(--white);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 4px;
+  backdrop-filter: blur(8px);
+}
+.blog-body { padding: 16px; }
+.blog-body h5 {
+  font-family: var(--font-head);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--slate-900);
+  margin-bottom: 6px;
+  line-height: 1.4;
+}
+.blog-body span { font-size: 11px; color: var(--slate-400); }
+
+/* Booking Form */
+.booking-section {
+  background: linear-gradient(135deg, var(--teal-900), var(--teal-950));
+  padding: 80px 60px;
+}
+.booking-inner {
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
+}
+.booking-inner .section-title { color: var(--white); }
+.booking-inner .section-sub { color: rgba(255,255,255,.6); margin: 0 auto 40px; }
+.booking-form {
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: var(--radius-xl);
+  padding: 32px;
+  backdrop-filter: blur(20px);
+}
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+.form-row.full { grid-template-columns: 1fr; }
+.form-field {
+  display: flex; flex-direction: column; gap: 5px;
+  text-align: left;
+}
+.form-field label {
+  font-size: 12px;
+  font-weight: 600;
+  color: rgba(255,255,255,.7);
+  letter-spacing: .04em;
+}
+.form-field input,
+.form-field select {
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.15);
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  color: var(--white);
+  font-family: var(--font-body);
+  font-size: 14px;
+  transition: var(--transition);
+  outline: none;
+  width: 100%;
+}
+.form-field input::placeholder { color: rgba(255,255,255,.35); }
+.form-field input:focus,
+.form-field select:focus {
+  border-color: var(--teal-400);
+  background: rgba(255,255,255,.12);
+}
+.form-field select option { background: var(--teal-900); color: var(--white); }
+
+/* Footer */
+.lp-footer {
+  background: var(--slate-900);
+  color: var(--white);
+  padding: 56px 60px 28px;
+}
+.footer-top {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr 1fr;
+  gap: 48px;
+  margin-bottom: 40px;
+  padding-bottom: 40px;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+}
+.footer-brand p { font-size: 13px; color: var(--slate-400); line-height: 1.7; margin-top: 12px; }
+.footer-col h5 {
+  font-family: var(--font-head);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--slate-500);
+  margin-bottom: 14px;
+}
+.footer-col a {
+  display: block;
+  font-size: 13px;
+  color: var(--slate-400);
+  margin-bottom: 8px;
+  transition: var(--transition);
+}
+.footer-col a:hover { color: var(--teal-400); }
+.footer-bottom {
+  display: flex; align-items: center; justify-content: space-between;
+  font-size: 12px;
+  color: var(--slate-500);
+}
+.social-links { display: flex; gap: 10px; }
+.social-link {
+  width: 34px; height: 34px;
+  background: rgba(255,255,255,.06);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--slate-400);
+  transition: var(--transition);
+}
+.social-link:hover { background: var(--teal-700); color: var(--white); }
+
+/* WA Float */
+.wa-float {
+  position: fixed;
+  bottom: 28px; right: 28px;
+  width: 52px; height: 52px;
+  background: #25D366;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 20px rgba(37,211,102,.4);
+  z-index: 9998;
+  transition: var(--transition);
+  cursor: pointer;
+}
+.wa-float:hover { transform: scale(1.08); }
+
+/* ============================================================
+   MONITORING CHART (CUSTOMER)
+   ============================================================ */
+.monitoring-chart {
+  height: 180px;
+  position: relative;
+  margin: 8px 0;
+}
+.chart-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 6px;
+  height: 100%;
+  padding: 0 4px;
+}
+.chart-bar {
+  flex: 1;
+  background: linear-gradient(180deg, var(--teal-400), var(--teal-600));
+  border-radius: 4px 4px 0 0;
+  transition: var(--transition);
+  cursor: pointer;
+  position: relative;
+}
+.chart-bar:hover { background: linear-gradient(180deg, var(--teal-300), var(--teal-500)); }
+.chart-labels {
+  display: flex;
+  gap: 6px;
+  padding: 6px 4px 0;
+}
+.chart-labels span {
+  flex: 1;
+  text-align: center;
+  font-size: 10px;
+  color: var(--slate-400);
+}
+
+/* ============================================================
+   CHAT UI
+   ============================================================ */
+.chat-layout {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 0;
+  height: 500px;
+  border: 1px solid var(--slate-200);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--white);
+}
+.chat-list {
+  border-right: 1px solid var(--slate-200);
+  overflow-y: auto;
+  background: var(--slate-50);
+}
+.chat-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 14px;
+  cursor: pointer;
+  transition: var(--transition);
+  border-bottom: 1px solid var(--slate-100);
+}
+.chat-item:hover { background: var(--slate-100); }
+.chat-item.active { background: var(--teal-50); border-left: 3px solid var(--teal-600); }
+.chat-item .ci-info strong { font-size: 13px; display: block; font-weight: 600; }
+.chat-item .ci-info span   { font-size: 11px; color: var(--slate-400); }
+.chat-main {
+  display: flex; flex-direction: column;
+}
+.chat-topbar {
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--slate-200);
+  display: flex; align-items: center; gap: 10px;
+  background: var(--white);
+}
+.online-dot { width: 8px; height: 8px; background: var(--green-500); border-radius: 50%; }
+.chat-messages {
+  flex: 1; overflow-y: auto; padding: 16px;
+  display: flex; flex-direction: column; gap: 12px;
+  background: var(--slate-50);
+}
+.msg {
+  max-width: 68%;
+  padding: 10px 14px;
+  border-radius: 14px;
+  font-size: 13px;
+  line-height: 1.6;
+}
+.msg-in  {
+  background: var(--white);
+  border: 1px solid var(--slate-200);
+  color: var(--slate-700);
+  align-self: flex-start;
+  border-bottom-left-radius: 4px;
+}
+.msg-out {
+  background: var(--teal-600);
+  color: var(--white);
+  align-self: flex-end;
+  border-bottom-right-radius: 4px;
+}
+.msg-time { font-size: 10px; margin-top: 4px; opacity: .55; }
+.chat-input-bar {
+  padding: 12px 16px;
+  border-top: 1px solid var(--slate-200);
+  display: flex; gap: 10px; align-items: center;
+  background: var(--white);
+}
+.chat-input {
+  flex: 1;
+  background: var(--slate-100);
+  border: 1px solid var(--slate-200);
+  border-radius: 20px;
+  padding: 8px 16px;
+  font-size: 13px;
+  font-family: var(--font-body);
+  outline: none;
+  color: var(--slate-800);
+  transition: var(--transition);
+}
+.chat-input:focus { border-color: var(--teal-400); background: var(--white); }
+
+/* ============================================================
+   INVENTORY PROGRESS
+   ============================================================ */
+.inv-stock-bar {
+  height: 6px;
+  background: var(--slate-200);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-top: 4px;
+}
+.inv-stock-fill {
+  height: 100%;
+  border-radius: 3px;
+  background: var(--teal-500);
+}
+.inv-stock-fill.low  { background: var(--rose-500); }
+.inv-stock-fill.warn { background: var(--amber-500); }
+
+/* ============================================================
+   QUEUE (DOCTOR)
+   ============================================================ */
+.queue-list { display: flex; flex-direction: column; gap: 10px; }
+.queue-item {
+  display: flex; align-items: center; gap: 14px;
+  background: var(--white);
+  border: 1px solid var(--slate-200);
+  border-radius: var(--radius-md);
+  padding: 14px 16px;
+  transition: var(--transition);
+}
+.queue-item:hover { border-color: var(--teal-300); box-shadow: var(--shadow-sm); }
+.queue-num {
+  width: 32px; height: 32px;
+  background: var(--teal-100);
+  color: var(--teal-700);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-head);
+  font-size: 13px;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+.queue-num.current { background: var(--teal-600); color: var(--white); }
+.queue-item .qi-info strong { font-size: 14px; font-weight: 600; display: block; color: var(--slate-900); }
+.queue-item .qi-info span   { font-size: 12px; color: var(--slate-500); }
+.queue-item .qi-right { margin-left: auto; text-align: right; }
+.queue-item .qi-time  { font-size: 12px; color: var(--slate-400); }
+
+/* ============================================================
+   REVENUE BARS (ADMIN)
+   ============================================================ */
+.rev-chart {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  height: 160px;
+  padding-bottom: 24px;
+  position: relative;
+}
+.rev-bar-wrap { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.rev-bar {
+  width: 100%;
+  background: linear-gradient(180deg, var(--teal-400), var(--teal-700));
+  border-radius: 4px 4px 0 0;
+  transition: var(--transition);
+  cursor: pointer;
+}
+.rev-bar:hover { background: linear-gradient(180deg, var(--teal-300), var(--teal-600)); }
+.rev-bar-wrap span { font-size: 10px; color: var(--slate-400); }
+
+/* ============================================================
+   MINI CALENDAR
+   ============================================================ */
+.mini-cal {
+  font-size: 13px;
+}
+.mini-cal-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 12px;
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: 14px;
+}
+.mini-cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 3px;
+  text-align: center;
+}
+.mini-cal-grid .day-name {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--slate-400);
+  padding: 4px 0;
+  letter-spacing: .04em;
+}
+.cal-day {
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px;
+  cursor: pointer;
+  transition: var(--transition);
+  margin: auto;
+}
+.cal-day:hover { background: var(--teal-100); color: var(--teal-700); }
+.cal-day.today  { background: var(--teal-600); color: var(--white); font-weight: 700; }
+.cal-day.has-event { position: relative; }
+.cal-day.has-event::after {
+  content: '';
+  position: absolute; bottom: 3px;
+  left: 50%; transform: translateX(-50%);
+  width: 4px; height: 4px;
+  background: var(--teal-400);
+  border-radius: 50%;
+}
+.cal-day.other-month { color: var(--slate-300); }
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     VIEW SWITCHER
+     ============================================================ -->
+<div id="view-switcher">
+  <span>TAMPILAN:</span>
+  <button class="vs-btn active" onclick="switchView('landing')">Landing Page</button>
+  <button class="vs-btn" onclick="switchView('customer')">Dashboard Pelanggan</button>
+  <button class="vs-btn" onclick="switchView('doctor')">Dashboard Dokter</button>
+  <button class="vs-btn" onclick="switchView('admin')">Dashboard Admin</button>
+</div>
+
+<!-- ============================================================
+     VIEW 1: LANDING PAGE
+     ============================================================ -->
+<div id="view-landing" class="view active">
+
+  <!-- Navbar -->
+  <nav class="lp-nav">
+    <div class="lp-logo">
+      <div class="logo-pill">Vet</div>Care
+    </div>
+    <div class="lp-nav-links">
+      <a href="#">Layanan</a>
+      <a href="#">Dokter</a>
+      <a href="#">Tentang Kami</a>
+      <a href="#">Artikel</a>
+      <a href="#">Kontak</a>
+    </div>
+    <div class="lp-nav-cta">
+      <button class="btn btn-outline btn-sm" onclick="switchView('customer')">
+        <i data-lucide="log-in" style="width:14px;height:14px"></i> Login
+      </button>
+      <button class="btn btn-primary btn-sm" onclick="switchView('customer')">
+        <i data-lucide="user-plus" style="width:14px;height:14px"></i> Daftar Sekarang
+      </button>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-content">
+      <div class="hero-tag">
+        <i data-lucide="shield-check" style="width:12px;height:12px"></i>
+        Terpercaya & Bersertifikat
+      </div>
+      <h1>Klinik Hewan Terpercaya untuk <em>Sahabat</em> Anda</h1>
+      <p>Perawatan profesional, penuh kasih, dan berbasis teknologi untuk memastikan hewan peliharaan Anda selalu sehat dan bahagia.</p>
+      <div class="hero-btns">
+        <button class="btn-hero-primary" onclick="switchView('customer')">
+          <i data-lucide="calendar-plus" style="width:16px;height:16px"></i>
+          Booking Janji Temu
+        </button>
+        <button class="btn-hero-outline">
+          <i data-lucide="play-circle" style="width:16px;height:16px"></i>
+          Lihat Video
+        </button>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat"><div class="num">5.200+</div><div class="lbl">Pasien Aktif</div></div>
+        <div class="hero-stat"><div class="num">12</div><div class="lbl">Dokter Spesialis</div></div>
+        <div class="hero-stat"><div class="num">98%</div><div class="lbl">Tingkat Kepuasan</div></div>
+      </div>
+    </div>
+    <div class="hero-float-card">
+      <div class="fc-title">APPOINTMENT HARI INI</div>
+      <div class="fc-appt">
+        <div class="fc-icon"><i data-lucide="clock" style="width:18px;height:18px;color:#5ED4D4"></i></div>
+        <div class="fc-info"><strong>09.00 — Pemeriksaan Umum</strong><span>Dr. Anisa Putri</span></div>
+      </div>
+      <div class="fc-appt">
+        <div class="fc-icon"><i data-lucide="syringe" style="width:18px;height:18px;color:#5ED4D4"></i></div>
+        <div class="fc-info"><strong>11.30 — Vaksinasi Rabies</strong><span>Dr. Budi Santoso</span></div>
+      </div>
+      <div class="fc-appt">
+        <div class="fc-icon"><i data-lucide="scissors" style="width:18px;height:18px;color:#5ED4D4"></i></div>
+        <div class="fc-info"><strong>14.00 — Grooming Lengkap</strong><span>Staff Grooming</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services -->
+  <section class="lp-section">
+    <div style="text-align:center;margin-bottom:0">
+      <div class="section-label" style="justify-content:center"><i data-lucide="grid-2x2" style="width:12px;height:12px"></i> Layanan Kami</div>
+      <div class="section-title" style="text-align:center">Semua Kebutuhan <em>Hewan Peliharaan</em> Anda</div>
+    </div>
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="service-icon"><i data-lucide="syringe" style="width:26px;height:26px"></i></div>
+        <h4>Vaksinasi</h4>
+        <p>Program vaksinasi lengkap untuk anjing, kucing, dan hewan kecil. Terjadwal & terpantau.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon"><i data-lucide="stethoscope" style="width:26px;height:26px"></i></div>
+        <h4>Pemeriksaan Umum</h4>
+        <p>Konsultasi dan pemeriksaan fisik menyeluruh oleh dokter hewan berpengalaman.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon"><i data-lucide="activity" style="width:26px;height:26px"></i></div>
+        <h4>Bedah & Operasi</h4>
+        <p>Fasilitas bedah modern dengan peralatan steril dan dokter bedah spesialis.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon"><i data-lucide="scissors" style="width:26px;height:26px"></i></div>
+        <h4>Grooming</h4>
+        <p>Layanan grooming profesional — mandi, potong bulu, nail trim, dan perawatan telinga.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon"><i data-lucide="microscope" style="width:26px;height:26px"></i></div>
+        <h4>Laboratorium</h4>
+        <p>Pemeriksaan darah, urin, feses, dan kultur dengan hasil cepat dan akurat.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon"><i data-lucide="scan" style="width:26px;height:26px"></i></div>
+        <h4>Radiologi & USG</h4>
+        <p>X-ray digital dan ultrasonografi untuk diagnosa internal yang presisi.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Doctors -->
+  <section class="lp-section lp-section-alt">
+    <div class="section-header-flex">
+      <div>
+        <div class="section-label"><i data-lucide="users" style="width:12px;height:12px"></i> Tim Medis</div>
+        <div class="section-title">Dokter Hewan <em>Kami</em></div>
+      </div>
+      <button class="btn btn-outline">Lihat Semua Dokter</button>
+    </div>
+    <div class="doctors-grid">
+      <div class="doctor-card">
+        <div class="doctor-photo"><i data-lucide="user" style="width:64px;height:64px;color:rgba(255,255,255,.2)"></i></div>
+        <div class="doctor-info">
+          <h4>drh. Anisa Putri</h4>
+          <div class="spec">Spesialis Hewan Kecil</div>
+          <div class="exp">8 tahun pengalaman</div>
+        </div>
+      </div>
+      <div class="doctor-card">
+        <div class="doctor-photo" style="background:linear-gradient(135deg,#047070,#035252)"><i data-lucide="user" style="width:64px;height:64px;color:rgba(255,255,255,.2)"></i></div>
+        <div class="doctor-info">
+          <h4>drh. Budi Santoso</h4>
+          <div class="spec">Spesialis Bedah</div>
+          <div class="exp">12 tahun pengalaman</div>
+        </div>
+      </div>
+      <div class="doctor-card">
+        <div class="doctor-photo" style="background:linear-gradient(135deg,#023535,#012A2A)"><i data-lucide="user" style="width:64px;height:64px;color:rgba(255,255,255,.2)"></i></div>
+        <div class="doctor-info">
+          <h4>drh. Rina Kurniawan</h4>
+          <div class="spec">Spesialis Dermatologi</div>
+          <div class="exp">6 tahun pengalaman</div>
+        </div>
+      </div>
+      <div class="doctor-card">
+        <div class="doctor-photo" style="background:linear-gradient(135deg,#058888,#047070)"><i data-lucide="user" style="width:64px;height:64px;color:rgba(255,255,255,.2)"></i></div>
+        <div class="doctor-info">
+          <h4>drh. Hendra Wijaya</h4>
+          <div class="spec">Spesialis Exotic Animal</div>
+          <div class="exp">9 tahun pengalaman</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials -->
+  <section class="lp-section">
+    <div class="section-label" style="justify-content:center;display:flex"><i data-lucide="star" style="width:12px;height:12px"></i> Ulasan Pelanggan</div>
+    <div class="section-title" style="text-align:center">Apa Kata <em>Mereka</em></div>
+    <div class="testi-grid">
+      <div class="testi-card">
+        <div class="testi-stars">
+          <i data-lucide="star" style="width:14px;height:14px;fill:#FBBF24;color:#FBBF24"></i>
+          <i data-lucide="star" style="width:14px;height:14px;fill:#FBBF24;color:#FBBF24"></i>
+          <i data-lucide="star" style="width:14px;height:14px;fill:#FBBF24;color:#FBBF24"></i>
+          <i data-lucide="star" style="width:14px;height:14px;fill:#FBBF24;color:#FBBF24"></i>
+          <i data-lucide="star" style="width:14px;height:14px;fill:#FBBF24;color:#FBBF24"></i>
+        </div>
+        <p>"Pelayanannya sangat profesional dan penuh kasih. Kucing saya Max langsung nyaman. Dokternya sabar menjelaskan semua diagnosis."</p>
+        <div class="testi-author">
+          <div class="av">SR</div>
+          <div><strong>Sari Rahayu</strong><span>Pemilik Max si Kucing Persia</span></div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">
+          <i data-lucide="star" style="width:14px;height:14px;fill:#FBBF24;color:#FBBF24"></i>
+          <i data-lucide="star" style="width:14px;height:14px;fill:#FBBF24;color:#FBBF24"></i>
+          <i data-lucide="star" style="width:14px;height:14px;fill:#FBBF24;color:#FBBF24"></i>
+          <i data-lucide="star" style="width:14px;height:14px;fill:#FBBF24;color:#FBBF24"></i>
+          <i data-lucide="star" style="width:14px;height:14px;fill:#FBBF24;color:#FBBF24"></i>
+        </div>
+        <p>"Fitur monitoring hewan di aplikasi sangat membantu saya memantau kondisi anjing saya dari rumah. Benar-benar inovatif!"</p>
+        <div class="testi-author">
+          <div class="av" style="background:linear-gradient(135deg,#047070,#023535)">BH</div>
+          <div><strong>Bagas Hendra</strong><span>Pemilik Bola si Golden Retriever</span></div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">
+          <i data-lucide="star" style="width:14px;height:14px;fill:#FBBF24;color:#FBBF24"></i>
+          <i data-lucide="star" style="width:14px;height:14px;fill:#FBBF24;color:#FBBF24"></i>
+          <i data-lucide="star" style="width:14px;height:14px;fill:#FBBF24;color:#FBBF24"></i>
+          <i data-lucide="star" style="width:14px;height:14px;fill:#FBBF24;color:#FBBF24"></i>
+          <i data-lucide="star" style="width:14px;height:14px;fill:#FBBF24;color:#FBBF24"></i>
+        </div>
+        <p>"Proses booking online mudah sekali. Reminder otomatis sangat membantu saya tidak lupa jadwal vaksin kelinci saya."</p>
+        <div class="testi-author">
+          <div class="av" style="background:linear-gradient(135deg,#058888,#035252)">DP</div>
+          <div><strong>Dewi Pratiwi</strong><span>Pemilik Putih si Kelinci</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Info Praktis -->
+  <section class="lp-section lp-section-alt">
+    <div class="section-header-flex">
+      <div>
+        <div class="section-label"><i data-lucide="map-pin" style="width:12px;height:12px"></i> Lokasi & Jam Operasional</div>
+        <div class="section-title">Temukan <em>Kami</em></div>
+      </div>
+    </div>
+    <div class="info-grid">
+      <div>
+        <div class="info-item">
+          <div class="ii-icon"><i data-lucide="map-pin" style="width:20px;height:20px"></i></div>
+          <div><strong>Alamat</strong><span>Jl. Veteriner Raya No. 88, Kelurahan Sehat, Jakarta Selatan 12345</span></div>
+        </div>
+        <div class="info-item">
+          <div class="ii-icon"><i data-lucide="clock" style="width:20px;height:20px"></i></div>
+          <div>
+            <strong>Jam Operasional</strong>
+            <span>Senin – Jumat: 08.00 – 20.00<br>Sabtu – Minggu: 08.00 – 17.00</span>
+          </div>
+        </div>
+        <div class="info-item">
+          <div class="ii-icon"><i data-lucide="phone" style="width:20px;height:20px"></i></div>
+          <div><strong>Telepon / WhatsApp</strong><span>+62 812-3456-7890</span></div>
+        </div>
+        <div class="info-item">
+          <div class="ii-icon"><i data-lucide="mail" style="width:20px;height:20px"></i></div>
+          <div><strong>Email</strong><span>info@vetcare.id</span></div>
+        </div>
+      </div>
+      <div class="map-placeholder">
+        <i data-lucide="map" style="width:28px;height:28px"></i>
+        Google Maps — Lihat Rute
+      </div>
+    </div>
+  </section>
+
+  <!-- Blog -->
+  <section class="lp-section">
+    <div class="section-header-flex">
+      <div>
+        <div class="section-label"><i data-lucide="newspaper" style="width:12px;height:12px"></i> Artikel Terbaru</div>
+        <div class="section-title">Tips Kesehatan <em>Hewan</em></div>
+      </div>
+      <button class="btn btn-outline">Lihat Semua Artikel</button>
+    </div>
+    <div class="blog-grid">
+      <div class="blog-card">
+        <div class="blog-img"><span class="blog-cat">Nutrisi</span></div>
+        <div class="blog-body"><h5>Panduan Pemberian Makan Kucing Berdasarkan Usia</h5><span>5 Juni 2025</span></div>
+      </div>
+      <div class="blog-card">
+        <div class="blog-img" style="background:linear-gradient(135deg,#047070,#023535)"><span class="blog-cat">Vaksinasi</span></div>
+        <div class="blog-body"><h5>Jadwal Vaksinasi Anjing yang Perlu Anda Ketahui</h5><span>2 Juni 2025</span></div>
+      </div>
+      <div class="blog-card">
+        <div class="blog-img" style="background:linear-gradient(135deg,#035252,#012A2A)"><span class="blog-cat">Perilaku</span></div>
+        <div class="blog-body"><h5>Mengapa Kucing Suka Bersembunyi? Ini Jawabannya</h5><span>28 Mei 2025</span></div>
+      </div>
+      <div class="blog-card">
+        <div class="blog-img" style="background:linear-gradient(135deg,#058888,#035252)"><span class="blog-cat">Grooming</span></div>
+        <div class="blog-body"><h5>5 Tips Merawat Bulu Anjing Agar Selalu Bersih & Sehat</h5><span>20 Mei 2025</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Booking Form -->
+  <section class="booking-section">
+    <div class="booking-inner">
+      <div class="section-label" style="justify-content:center;color:var(--teal-300)"><i data-lucide="calendar-check" style="width:12px;height:12px"></i> Konsultasi Gratis</div>
+      <div class="section-title">Booking Janji Temu <em style="color:var(--teal-300)">Sekarang</em></div>
+      <p class="section-sub">Isi formulir berikut dan tim kami akan menghubungi Anda dalam 30 menit.</p>
+      <div class="booking-form">
+        <div class="form-row">
+          <div class="form-field"><label>Nama Pemilik</label><input type="text" placeholder="Nama lengkap Anda" /></div>
+          <div class="form-field"><label>Nomor WhatsApp</label><input type="tel" placeholder="+62 8xx xxxx xxxx" /></div>
+        </div>
+        <div class="form-row">
+          <div class="form-field"><label>Nama Hewan</label><input type="text" placeholder="Nama hewan peliharaan" /></div>
+          <div class="form-field">
+            <label>Jenis Hewan</label>
+            <select>
+              <option>Pilih jenis hewan...</option>
+              <option>Kucing</option>
+              <option>Anjing</option>
+              <option>Kelinci</option>
+              <option>Burung</option>
+              <option>Reptil</option>
+              <option>Lainnya</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-field">
+            <label>Layanan</label>
+            <select>
+              <option>Pilih layanan...</option>
+              <option>Pemeriksaan Umum</option>
+              <option>Vaksinasi</option>
+              <option>Grooming</option>
+              <option>Laboratorium</option>
+              <option>Bedah</option>
+              <option>Konsultasi Gratis</option>
+            </select>
+          </div>
+          <div class="form-field"><label>Tanggal Preferensi</label><input type="date" /></div>
+        </div>
+        <button class="btn btn-primary" style="width:100%;justify-content:center;padding:13px;font-size:15px;margin-top:6px;border-radius:var(--radius-md)">
+          <i data-lucide="send" style="width:16px;height:16px"></i>
+          Kirim Permintaan Booking
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="lp-footer">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="lp-logo" style="color:var(--white)"><div class="logo-pill">Vet</div>Care</div>
+        <p>Klinik hewan terpercaya dengan teknologi modern untuk memastikan kesehatan dan kebahagiaan sahabat berbulu Anda.</p>
+        <div class="social-links" style="margin-top:16px">
+          <a class="social-link" href="#"><i data-lucide="instagram" style="width:16px;height:16px"></i></a>
+          <a class="social-link" href="#"><i data-lucide="facebook" style="width:16px;height:16px"></i></a>
+          <a class="social-link" href="#"><i data-lucide="twitter" style="width:16px;height:16px"></i></a>
+          <a class="social-link" href="#"><i data-lucide="youtube" style="width:16px;height:16px"></i></a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h5>Layanan</h5>
+        <a href="#">Vaksinasi</a>
+        <a href="#">Pemeriksaan Umum</a>
+        <a href="#">Bedah & Operasi</a>
+        <a href="#">Grooming</a>
+        <a href="#">Laboratorium</a>
+        <a href="#">Radiologi & USG</a>
+      </div>
+      <div class="footer-col">
+        <h5>Informasi</h5>
+        <a href="#">Tentang Kami</a>
+        <a href="#">Tim Dokter</a>
+        <a href="#">Artikel & Blog</a>
+        <a href="#">Karir</a>
+        <a href="#">FAQ</a>
+      </div>
+      <div class="footer-col">
+        <h5>Legal</h5>
+        <a href="#">Kebijakan Privasi</a>
+        <a href="#">Syarat & Ketentuan</a>
+        <a href="#">Cookie Policy</a>
+        <a href="#">Hubungi Kami</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 VetCare. Hak cipta dilindungi undang-undang.</span>
+      <span>Dibuat dengan penuh kasih untuk sahabat berbulu Anda</span>
+    </div>
+  </footer>
+
+  <!-- WhatsApp Float -->
+  <div class="wa-float">
+    <i data-lucide="message-circle" style="width:24px;height:24px;color:white"></i>
+  </div>
+
+</div><!-- /view-landing -->
+
+
+<!-- ============================================================
+     VIEW 2: DASHBOARD PELANGGAN
+     ============================================================ -->
+<div id="view-customer" class="view">
+  <div class="dash-layout">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-logo">
+        <div class="logo-mark">
+          <div class="logo-icon"><i data-lucide="heart-pulse" style="width:18px;height:18px;color:white"></i></div>
+          <div class="logo-text"><strong>VetCare</strong><span>Portal Pelanggan</span></div>
+        </div>
+      </div>
+      <div class="sidebar-user">
+        <div class="avatar">SR</div>
+        <div class="user-info"><strong>Sari Rahayu</strong><span>Pemilik Hewan</span></div>
+      </div>
+      <nav class="sidebar-nav">
+        <div class="nav-section-label">Utama</div>
+        <div class="nav-item active" onclick="showCustomerPage('beranda')">
+          <i data-lucide="layout-dashboard" style="width:16px;height:16px"></i> Beranda
+        </div>
+        <div class="nav-item" onclick="showCustomerPage('hewan')">
+          <i data-lucide="paw-print" style="width:16px;height:16px"></i> Hewan Saya
+        </div>
+        <div class="nav-item" onclick="showCustomerPage('monitoring')">
+          <i data-lucide="activity" style="width:16px;height:16px"></i> Monitoring Hewan
+        </div>
+        <div class="nav-item" onclick="showCustomerPage('appointment')">
+          <i data-lucide="calendar-check" style="width:16px;height:16px"></i> Appointment
+          <span class="badge">2</span>
+        </div>
+        <div class="nav-section-label">Riwayat</div>
+        <div class="nav-item" onclick="showCustomerPage('riwayat')">
+          <i data-lucide="file-text" style="width:16px;height:16px"></i> Riwayat Kunjungan
+        </div>
+        <div class="nav-item" onclick="showCustomerPage('chat')">
+          <i data-lucide="message-square" style="width:16px;height:16px"></i> Konsultasi / Chat
+          <span class="badge">1</span>
+        </div>
+        <div class="nav-item" onclick="showCustomerPage('invoice')">
+          <i data-lucide="receipt" style="width:16px;height:16px"></i> Invoice & Pembayaran
+        </div>
+        <div class="nav-section-label">Akun</div>
+        <div class="nav-item" onclick="showCustomerPage('profil')">
+          <i data-lucide="user-circle" style="width:16px;height:16px"></i> Profil & Pengaturan
+        </div>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="nav-item" onclick="switchView('landing')">
+          <i data-lucide="log-out" style="width:16px;height:16px"></i> Keluar
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main -->
+    <div class="dash-main">
+      <div class="dash-topbar">
+        <div class="dash-topbar-left">
+          <h1 id="cust-page-title">Beranda</h1>
+          <p id="cust-page-sub">Selamat datang, Sari Rahayu</p>
+        </div>
+        <div class="dash-topbar-right">
+          <button class="icon-btn"><i data-lucide="search" style="width:16px;height:16px"></i></button>
+          <button class="icon-btn">
+            <i data-lucide="bell" style="width:16px;height:16px"></i>
+            <span class="dot"></span>
+          </button>
+          <div class="avatar" style="cursor:pointer">SR</div>
+        </div>
+      </div>
+
+      <div class="dash-content">
+
+        <!-- BERANDA PAGE -->
+        <div id="cust-beranda">
+          <!-- Stats -->
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-icon teal"><i data-lucide="paw-print" style="width:22px;height:22px"></i></div>
+              <div class="stat-info"><div class="label">Hewan Terdaftar</div><div class="value">3</div><div class="change up"><i data-lucide="trending-up" style="width:12px;height:12px"></i> Semua sehat</div></div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon amber"><i data-lucide="calendar" style="width:22px;height:22px"></i></div>
+              <div class="stat-info"><div class="label">Appointment Mendatang</div><div class="value">2</div><div class="change up"><i data-lucide="clock" style="width:12px;height:12px"></i> Terdekat: 10 Jun</div></div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon green"><i data-lucide="check-circle" style="width:22px;height:22px"></i></div>
+              <div class="stat-info"><div class="label">Total Kunjungan</div><div class="value">18</div><div class="change up"><i data-lucide="trending-up" style="width:12px;height:12px"></i> +2 bulan ini</div></div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon rose"><i data-lucide="bell" style="width:22px;height:22px"></i></div>
+              <div class="stat-info"><div class="label">Notifikasi Baru</div><div class="value">3</div><div class="change"><i data-lucide="info" style="width:12px;height:12px;color:var(--rose-500)"></i> 1 perlu tindakan</div></div>
+            </div>
+          </div>
+
+          <div class="grid-2">
+            <!-- Hewan Card -->
+            <div class="card">
+              <div class="card-header">
+                <h3>Hewan Saya</h3>
+                <button class="btn-ghost btn"><i data-lucide="plus" style="width:14px;height:14px"></i> Tambah</button>
+              </div>
+              <div class="card-body" style="padding:12px">
+                <div style="display:flex;flex-direction:column;gap:8px">
+                  <div style="display:flex;align-items:center;gap:12px;padding:12px;background:var(--teal-50);border-radius:var(--radius-md);border:1px solid var(--teal-100)">
+                    <div style="width:40px;height:40px;background:var(--teal-600);border-radius:50%;display:flex;align-items:center;justify-content:center;color:white">
+                      <i data-lucide="paw-print" style="width:18px;height:18px"></i>
+                    </div>
+                    <div style="flex:1"><strong style="font-size:14px">Max</strong><br><span style="font-size:12px;color:var(--slate-500)">Kucing Persia — 3 tahun</span></div>
+                    <span class="badge-status status-confirmed">Sehat</span>
+                  </div>
+                  <div style="display:flex;align-items:center;gap:12px;padding:12px;background:var(--slate-50);border-radius:var(--radius-md);border:1px solid var(--slate-200)">
+                    <div style="width:40px;height:40px;background:var(--amber-500);border-radius:50%;display:flex;align-items:center;justify-content:center;color:white">
+                      <i data-lucide="paw-print" style="width:18px;height:18px"></i>
+                    </div>
+                    <div style="flex:1"><strong style="font-size:14px">Bola</strong><br><span style="font-size:12px;color:var(--slate-500)">Golden Retriever — 5 tahun</span></div>
+                    <span class="badge-status status-pending">Kontrol</span>
+                  </div>
+                  <div style="display:flex;align-items:center;gap:12px;padding:12px;background:var(--slate-50);border-radius:var(--radius-md);border:1px solid var(--slate-200)">
+                    <div style="width:40px;height:40px;background:var(--rose-500);border-radius:50%;display:flex;align-items:center;justify-content:center;color:white">
+                      <i data-lucide="paw-print" style="width:18px;height:18px"></i>
+                    </div>
+                    <div style="flex:1"><strong style="font-size:14px">Putih</strong><br><span style="font-size:12px;color:var(--slate-500)">Kelinci Anggora — 1 tahun</span></div>
+                    <span class="badge-status status-confirmed">Sehat</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Upcoming Appointments -->
+            <div class="card">
+              <div class="card-header">
+                <h3>Appointment Mendatang</h3>
+                <button class="btn-ghost btn" onclick="showCustomerPage('appointment')">Lihat Semua</button>
+              </div>
+              <div class="card-body" style="padding:12px;display:flex;flex-direction:column;gap:8px">
+                <div style="padding:14px;border-radius:var(--radius-md);background:var(--teal-50);border-left:3px solid var(--teal-500)">
+                  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+                    <strong style="font-size:13px">Vaksinasi Rabies — Max</strong>
+                    <span class="badge-status status-confirmed">Confirmed</span>
+                  </div>
+                  <div style="font-size:12px;color:var(--slate-500);display:flex;align-items:center;gap:6px">
+                    <i data-lucide="calendar" style="width:12px;height:12px"></i> 10 Juni 2025 &nbsp;
+                    <i data-lucide="clock" style="width:12px;height:12px"></i> 09.00 &nbsp;
+                    <i data-lucide="user" style="width:12px;height:12px"></i> drh. Anisa
+                  </div>
+                </div>
+                <div style="padding:14px;border-radius:var(--radius-md);background:var(--amber-100);border-left:3px solid var(--amber-400)">
+                  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+                    <strong style="font-size:13px">Pemeriksaan Umum — Bola</strong>
+                    <span class="badge-status status-pending">Pending</span>
+                  </div>
+                  <div style="font-size:12px;color:var(--slate-500);display:flex;align-items:center;gap:6px">
+                    <i data-lucide="calendar" style="width:12px;height:12px"></i> 15 Juni 2025 &nbsp;
+                    <i data-lucide="clock" style="width:12px;height:12px"></i> 14.00 &nbsp;
+                    <i data-lucide="user" style="width:12px;height:12px"></i> drh. Budi
+                  </div>
+                </div>
+                <button class="btn btn-primary btn-sm" style="align-self:flex-start;margin-top:4px">
+                  <i data-lucide="plus" style="width:14px;height:14px"></i> Buat Appointment Baru
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Notifikasi -->
+          <div class="card" style="margin-top:20px">
+            <div class="card-header">
+              <h3>Notifikasi</h3>
+              <span style="font-size:12px;color:var(--teal-600);font-weight:600;cursor:pointer">Tandai semua dibaca</span>
+            </div>
+            <div>
+              <div style="display:flex;align-items:center;gap:14px;padding:14px 20px;border-bottom:1px solid var(--slate-100);background:var(--teal-50)">
+                <div style="width:36px;height:36px;background:var(--teal-100);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--teal-700);flex-shrink:0"><i data-lucide="syringe" style="width:16px;height:16px"></i></div>
+                <div style="flex:1"><strong style="font-size:13px">Reminder Vaksin</strong><br><span style="font-size:12px;color:var(--slate-500)">Jadwal vaksinasi Max sudah dekat — 10 Juni 2025</span></div>
+                <span style="font-size:11px;color:var(--slate-400)">2 jam lalu</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:14px;padding:14px 20px;border-bottom:1px solid var(--slate-100)">
+                <div style="width:36px;height:36px;background:var(--green-100);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--green-500);flex-shrink:0"><i data-lucide="check-circle" style="width:16px;height:16px"></i></div>
+                <div style="flex:1"><strong style="font-size:13px">Appointment Dikonfirmasi</strong><br><span style="font-size:12px;color:var(--slate-500)">Jadwal 10 Juni telah dikonfirmasi oleh klinik</span></div>
+                <span style="font-size:11px;color:var(--slate-400)">5 jam lalu</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:14px;padding:14px 20px">
+                <div style="width:36px;height:36px;background:var(--amber-100);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--amber-500);flex-shrink:0"><i data-lucide="message-square" style="width:16px;height:16px"></i></div>
+                <div style="flex:1"><strong style="font-size:13px">Pesan Baru dari drh. Anisa</strong><br><span style="font-size:12px;color:var(--slate-500)">Hasil lab Max sudah tersedia. Silakan cek di chat.</span></div>
+                <span style="font-size:11px;color:var(--slate-400)">1 hari lalu</span>
+              </div>
+            </div>
+          </div>
+        </div><!-- /cust-beranda -->
+
+        <!-- MONITORING PAGE -->
+        <div id="cust-monitoring" style="display:none">
+          <div class="grid-2" style="margin-bottom:20px">
+            <div class="card">
+              <div class="card-header">
+                <h3>Pilih Hewan</h3>
+              </div>
+              <div class="card-body" style="display:flex;gap:10px">
+                <button class="btn btn-primary btn-sm">Max (Kucing)</button>
+                <button class="btn btn-outline btn-sm">Bola (Anjing)</button>
+                <button class="btn btn-outline btn-sm">Putih (Kelinci)</button>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-header"><h3>Input Data Hari Ini — Max</h3></div>
+              <div class="card-body">
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">
+                  <div class="form-field" style="gap:4px">
+                    <label style="font-size:11px;font-weight:600;color:var(--slate-500)">Berat (kg)</label>
+                    <input type="number" value="4.2" style="border:1px solid var(--slate-300);border-radius:6px;padding:7px 10px;font-size:13px;font-family:var(--font-body);outline:none;width:100%;transition:var(--transition)">
+                  </div>
+                  <div class="form-field" style="gap:4px">
+                    <label style="font-size:11px;font-weight:600;color:var(--slate-500)">Suhu (°C)</label>
+                    <input type="number" value="38.5" style="border:1px solid var(--slate-300);border-radius:6px;padding:7px 10px;font-size:13px;font-family:var(--font-body);outline:none;width:100%;transition:var(--transition)">
+                  </div>
+                </div>
+                <button class="btn btn-primary btn-sm"><i data-lucide="save" style="width:13px;height:13px"></i> Simpan Data</button>
+              </div>
+            </div>
+          </div>
+          <div class="grid-2">
+            <div class="card">
+              <div class="card-header"><h3>Tren Berat Badan — Max (7 Hari)</h3></div>
+              <div class="card-body">
+                <div class="monitoring-chart">
+                  <div class="chart-bars">
+                    <div class="chart-bar" style="height:55%"></div>
+                    <div class="chart-bar" style="height:60%"></div>
+                    <div class="chart-bar" style="height:58%"></div>
+                    <div class="chart-bar" style="height:63%"></div>
+                    <div class="chart-bar" style="height:62%"></div>
+                    <div class="chart-bar" style="height:65%"></div>
+                    <div class="chart-bar" style="height:70%;background:linear-gradient(180deg,#2DC5C5,#06A6A6)"></div>
+                  </div>
+                </div>
+                <div class="chart-labels">
+                  <span>Sen</span><span>Sel</span><span>Rab</span><span>Kam</span><span>Jum</span><span>Sab</span><span>Min</span>
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-header"><h3>Tren Suhu Tubuh — Max (7 Hari)</h3></div>
+              <div class="card-body">
+                <div class="monitoring-chart">
+                  <div class="chart-bars">
+                    <div class="chart-bar" style="height:72%;background:linear-gradient(180deg,var(--green-500),#047070)"></div>
+                    <div class="chart-bar" style="height:74%;background:linear-gradient(180deg,var(--green-500),#047070)"></div>
+                    <div class="chart-bar" style="height:80%;background:linear-gradient(180deg,var(--amber-500),#B45309)"></div>
+                    <div class="chart-bar" style="height:75%;background:linear-gradient(180deg,var(--green-500),#047070)"></div>
+                    <div class="chart-bar" style="height:73%;background:linear-gradient(180deg,var(--green-500),#047070)"></div>
+                    <div class="chart-bar" style="height:72%;background:linear-gradient(180deg,var(--green-500),#047070)"></div>
+                    <div class="chart-bar" style="height:74%;background:linear-gradient(180deg,var(--green-500),#047070)"></div>
+                  </div>
+                </div>
+                <div class="chart-labels">
+                  <span>Sen</span><span>Sel</span><span>Rab</span><span>Kam</span><span>Jum</span><span>Sab</span><span>Min</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div><!-- /cust-monitoring -->
+
+        <!-- APPOINTMENT PAGE -->
+        <div id="cust-appointment" style="display:none">
+          <div style="display:flex;justify-content:flex-end;margin-bottom:16px">
+            <button class="btn btn-primary"><i data-lucide="plus" style="width:15px;height:15px"></i> Buat Appointment Baru</button>
+          </div>
+          <div class="card">
+            <div class="card-header"><h3>Semua Appointment</h3></div>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Tanggal & Waktu</th><th>Hewan</th><th>Layanan</th><th>Dokter</th><th>Status</th><th>Aksi</th></tr></thead>
+                <tbody>
+                  <tr><td>10 Jun 2025, 09.00</td><td><span class="td-name"><i data-lucide="paw-print" style="width:14px;height:14px;color:var(--teal-600)"></i>Max</span></td><td>Vaksinasi Rabies</td><td>drh. Anisa Putri</td><td><span class="badge-status status-confirmed">Confirmed</span></td><td><button class="btn btn-outline btn-sm">Detail</button></td></tr>
+                  <tr><td>15 Jun 2025, 14.00</td><td><span class="td-name"><i data-lucide="paw-print" style="width:14px;height:14px;color:var(--amber-500)"></i>Bola</span></td><td>Pemeriksaan Umum</td><td>drh. Budi Santoso</td><td><span class="badge-status status-pending">Pending</span></td><td><button class="btn btn-outline btn-sm">Detail</button></td></tr>
+                  <tr><td>28 Mei 2025, 10.00</td><td><span class="td-name"><i data-lucide="paw-print" style="width:14px;height:14px;color:var(--rose-500)"></i>Putih</span></td><td>Pemeriksaan Umum</td><td>drh. Rina Kurniawan</td><td><span class="badge-status status-done">Selesai</span></td><td><button class="btn btn-outline btn-sm">Rekam Medis</button></td></tr>
+                  <tr><td>12 Mei 2025, 11.00</td><td><span class="td-name"><i data-lucide="paw-print" style="width:14px;height:14px;color:var(--teal-600)"></i>Max</span></td><td>Grooming</td><td>Staff Grooming</td><td><span class="badge-status status-done">Selesai</span></td><td><button class="btn btn-outline btn-sm">Detail</button></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div><!-- /cust-appointment -->
+
+        <!-- CHAT PAGE -->
+        <div id="cust-chat" style="display:none">
+          <div class="chat-layout">
+            <div class="chat-list">
+              <div style="padding:12px 14px;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--slate-400);border-bottom:1px solid var(--slate-200)">Percakapan</div>
+              <div class="chat-item active">
+                <div class="avatar" style="background:var(--teal-700);font-size:12px">AP</div>
+                <div class="ci-info"><strong>drh. Anisa Putri</strong><span>Hasil lab sudah ada...</span></div>
+              </div>
+              <div class="chat-item">
+                <div class="avatar" style="background:var(--slate-600);font-size:12px">BS</div>
+                <div class="ci-info"><strong>drh. Budi Santoso</strong><span>Terima kasih bu Sari</span></div>
+              </div>
+            </div>
+            <div class="chat-main">
+              <div class="chat-topbar">
+                <div class="avatar" style="background:var(--teal-700);font-size:12px;width:32px;height:32px">AP</div>
+                <div>
+                  <strong style="font-size:13px;font-weight:600">drh. Anisa Putri</strong>
+                  <div style="display:flex;align-items:center;gap:4px"><div class="online-dot"></div><span style="font-size:11px;color:var(--slate-400)">Online</span></div>
+                </div>
+                <div style="margin-left:auto;display:flex;gap:8px">
+                  <button class="icon-btn"><i data-lucide="phone" style="width:15px;height:15px"></i></button>
+                  <button class="icon-btn"><i data-lucide="more-vertical" style="width:15px;height:15px"></i></button>
+                </div>
+              </div>
+              <div class="chat-messages">
+                <div class="msg msg-in">Selamat pagi Bu Sari. Hasil lab Max sudah keluar. Semuanya normal.<div class="msg-time">09.15</div></div>
+                <div class="msg msg-out">Alhamdulillah, terima kasih dok! Apa ada yang perlu diperhatikan?<div class="msg-time">09.22</div></div>
+                <div class="msg msg-in">Tidak ada yang mengkhawatirkan. Lanjutkan pola makan sekarang dan pastikan minum air yang cukup ya.<div class="msg-time">09.24</div></div>
+                <div class="msg msg-out">Baik dok, siap. Untuk jadwal vaksin tanggal 10, apakah Max perlu puasa dulu?<div class="msg-time">09.28</div></div>
+                <div class="msg msg-in">Tidak perlu puasa untuk vaksinasi. Datang seperti biasa saja. Kalau ada pertanyaan lain jangan segan tanya ya Bu.<div class="msg-time">09.30</div></div>
+              </div>
+              <div class="chat-input-bar">
+                <button class="icon-btn"><i data-lucide="paperclip" style="width:15px;height:15px"></i></button>
+                <input type="text" class="chat-input" placeholder="Ketik pesan..." />
+                <button class="btn btn-primary btn-sm" style="border-radius:8px">
+                  <i data-lucide="send" style="width:14px;height:14px"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div><!-- /cust-chat -->
+
+        <!-- RIWAYAT PAGE -->
+        <div id="cust-riwayat" style="display:none">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
+            <input type="text" placeholder="Cari riwayat kunjungan..." style="border:1px solid var(--slate-300);border-radius:8px;padding:8px 12px;font-size:13px;font-family:var(--font-body);outline:none;width:240px">
+            <select style="border:1px solid var(--slate-300);border-radius:8px;padding:8px 12px;font-size:13px;font-family:var(--font-body);outline:none;color:var(--slate-700)">
+              <option>Semua Hewan</option><option>Max</option><option>Bola</option><option>Putih</option>
+            </select>
+          </div>
+          <div class="card">
+            <div class="card-header"><h3>Rekam Medis & Riwayat Kunjungan</h3></div>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Tanggal</th><th>Hewan</th><th>Diagnosis</th><th>Dokter</th><th>Tindakan</th><th>Download</th></tr></thead>
+                <tbody>
+                  <tr><td>28 Mei 2025</td><td>Putih</td><td>Pemeriksaan rutin — normal</td><td>drh. Rina</td><td>Pemeriksaan fisik</td><td><button class="btn btn-outline btn-sm"><i data-lucide="download" style="width:12px;height:12px"></i> PDF</button></td></tr>
+                  <tr><td>12 Mei 2025</td><td>Max</td><td>Grooming & perawatan kuku</td><td>Staff</td><td>Grooming lengkap</td><td><button class="btn btn-outline btn-sm"><i data-lucide="download" style="width:12px;height:12px"></i> PDF</button></td></tr>
+                  <tr><td>3 Apr 2025</td><td>Bola</td><td>Dermatitis ringan</td><td>drh. Budi</td><td>Salep + antibiotik</td><td><button class="btn btn-outline btn-sm"><i data-lucide="download" style="width:12px;height:12px"></i> PDF</button></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div><!-- /cust-riwayat -->
+
+        <!-- INVOICE PAGE -->
+        <div id="cust-invoice" style="display:none">
+          <div class="card">
+            <div class="card-header"><h3>Invoice & Riwayat Pembayaran</h3></div>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>No. Invoice</th><th>Tanggal</th><th>Layanan</th><th>Total</th><th>Status</th><th>Aksi</th></tr></thead>
+                <tbody>
+                  <tr><td style="font-weight:600;color:var(--teal-700)">#INV-2025-0312</td><td>28 Mei 2025</td><td>Pemeriksaan Umum — Putih</td><td style="font-weight:700">Rp 150.000</td><td><span class="badge-status status-done">Lunas</span></td><td><button class="btn btn-outline btn-sm"><i data-lucide="download" style="width:12px;height:12px"></i></button></td></tr>
+                  <tr><td style="font-weight:600;color:var(--teal-700)">#INV-2025-0298</td><td>12 Mei 2025</td><td>Grooming — Max</td><td style="font-weight:700">Rp 200.000</td><td><span class="badge-status status-done">Lunas</span></td><td><button class="btn btn-outline btn-sm"><i data-lucide="download" style="width:12px;height:12px"></i></button></td></tr>
+                  <tr><td style="font-weight:600;color:var(--amber-500)">#INV-2025-0345</td><td>10 Jun 2025</td><td>Vaksinasi — Max</td><td style="font-weight:700">Rp 350.000</td><td><span class="badge-status status-pending">Belum Bayar</span></td><td><button class="btn btn-primary btn-sm">Bayar</button></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div><!-- /cust-invoice -->
+
+        <!-- HEWAN PAGE -->
+        <div id="cust-hewan" style="display:none">
+          <div style="display:flex;justify-content:flex-end;margin-bottom:16px">
+            <button class="btn btn-primary"><i data-lucide="plus" style="width:15px;height:15px"></i> Tambah Hewan</button>
+          </div>
+          <div class="grid-3">
+            <div class="card">
+              <div style="height:120px;background:linear-gradient(135deg,var(--teal-600),var(--teal-900));display:flex;align-items:center;justify-content:center">
+                <i data-lucide="paw-print" style="width:48px;height:48px;color:rgba(255,255,255,.3)"></i>
+              </div>
+              <div class="card-body">
+                <h4 style="font-family:var(--font-head);font-size:16px;font-weight:700;margin-bottom:4px">Max</h4>
+                <p style="font-size:12px;color:var(--slate-500);margin-bottom:12px">Kucing Persia &bull; Jantan &bull; 3 tahun</p>
+                <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px">
+                  <span style="font-size:11px;background:var(--teal-100);color:var(--teal-700);padding:2px 8px;border-radius:10px;font-weight:600">Berat: 4.2 kg</span>
+                  <span style="font-size:11px;background:var(--green-100);color:var(--green-500);padding:2px 8px;border-radius:10px;font-weight:600">Vaksin: Up to date</span>
+                </div>
+                <div style="display:flex;gap:8px">
+                  <button class="btn btn-outline btn-sm" style="flex:1">Edit</button>
+                  <button class="btn btn-primary btn-sm" style="flex:1">Detail</button>
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <div style="height:120px;background:linear-gradient(135deg,var(--amber-500),#92400E);display:flex;align-items:center;justify-content:center">
+                <i data-lucide="paw-print" style="width:48px;height:48px;color:rgba(255,255,255,.3)"></i>
+              </div>
+              <div class="card-body">
+                <h4 style="font-family:var(--font-head);font-size:16px;font-weight:700;margin-bottom:4px">Bola</h4>
+                <p style="font-size:12px;color:var(--slate-500);margin-bottom:12px">Golden Retriever &bull; Jantan &bull; 5 tahun</p>
+                <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px">
+                  <span style="font-size:11px;background:var(--amber-100);color:#B45309;padding:2px 8px;border-radius:10px;font-weight:600">Berat: 28 kg</span>
+                  <span style="font-size:11px;background:var(--amber-100);color:#B45309;padding:2px 8px;border-radius:10px;font-weight:600">Kontrol diperlukan</span>
+                </div>
+                <div style="display:flex;gap:8px">
+                  <button class="btn btn-outline btn-sm" style="flex:1">Edit</button>
+                  <button class="btn btn-primary btn-sm" style="flex:1">Detail</button>
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <div style="height:120px;background:linear-gradient(135deg,var(--rose-500),#9F1239);display:flex;align-items:center;justify-content:center">
+                <i data-lucide="paw-print" style="width:48px;height:48px;color:rgba(255,255,255,.3)"></i>
+              </div>
+              <div class="card-body">
+                <h4 style="font-family:var(--font-head);font-size:16px;font-weight:700;margin-bottom:4px">Putih</h4>
+                <p style="font-size:12px;color:var(--slate-500);margin-bottom:12px">Kelinci Anggora &bull; Betina &bull; 1 tahun</p>
+                <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px">
+                  <span style="font-size:11px;background:var(--teal-100);color:var(--teal-700);padding:2px 8px;border-radius:10px;font-weight:600">Berat: 2.1 kg</span>
+                  <span style="font-size:11px;background:var(--green-100);color:var(--green-500);padding:2px 8px;border-radius:10px;font-weight:600">Sehat</span>
+                </div>
+                <div style="display:flex;gap:8px">
+                  <button class="btn btn-outline btn-sm" style="flex:1">Edit</button>
+                  <button class="btn btn-primary btn-sm" style="flex:1">Detail</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div><!-- /cust-hewan -->
+
+        <!-- PROFIL PAGE -->
+        <div id="cust-profil" style="display:none">
+          <div class="grid-2">
+            <div class="card">
+              <div class="card-header"><h3>Data Diri</h3></div>
+              <div class="card-body" style="display:flex;flex-direction:column;gap:14px">
+                <div style="display:flex;align-items:center;gap:16px;margin-bottom:8px">
+                  <div style="width:64px;height:64px;background:var(--teal-600);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--font-head);font-size:22px;font-weight:700;color:white">SR</div>
+                  <div>
+                    <strong style="font-size:16px">Sari Rahayu</strong>
+                    <p style="font-size:13px;color:var(--slate-500)">sari@email.com</p>
+                  </div>
+                </div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+                  <div class="form-field" style="gap:4px">
+                    <label style="font-size:11px;font-weight:600;color:var(--slate-500)">Nama Lengkap</label>
+                    <input type="text" value="Sari Rahayu" style="border:1px solid var(--slate-300);border-radius:6px;padding:8px 12px;font-size:13px;font-family:var(--font-body);outline:none;width:100%">
+                  </div>
+                  <div class="form-field" style="gap:4px">
+                    <label style="font-size:11px;font-weight:600;color:var(--slate-500)">Nomor Telepon</label>
+                    <input type="tel" value="+62 812 3456 7890" style="border:1px solid var(--slate-300);border-radius:6px;padding:8px 12px;font-size:13px;font-family:var(--font-body);outline:none;width:100%">
+                  </div>
+                </div>
+                <button class="btn btn-primary btn-sm" style="align-self:flex-start"><i data-lucide="save" style="width:13px;height:13px"></i> Simpan Perubahan</button>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-header"><h3>Preferensi Notifikasi</h3></div>
+              <div class="card-body" style="display:flex;flex-direction:column;gap:14px">
+                <div style="display:flex;align-items:center;justify-content:space-between;padding:12px;background:var(--slate-50);border-radius:var(--radius-md)">
+                  <div><strong style="font-size:13px">Reminder Vaksinasi</strong><br><span style="font-size:12px;color:var(--slate-400)">Email & WhatsApp</span></div>
+                  <div style="width:40px;height:22px;background:var(--teal-500);border-radius:20px;cursor:pointer;position:relative"><div style="position:absolute;right:2px;top:2px;width:18px;height:18px;background:white;border-radius:50%"></div></div>
+                </div>
+                <div style="display:flex;align-items:center;justify-content:space-between;padding:12px;background:var(--slate-50);border-radius:var(--radius-md)">
+                  <div><strong style="font-size:13px">Konfirmasi Appointment</strong><br><span style="font-size:12px;color:var(--slate-400)">Email</span></div>
+                  <div style="width:40px;height:22px;background:var(--teal-500);border-radius:20px;cursor:pointer;position:relative"><div style="position:absolute;right:2px;top:2px;width:18px;height:18px;background:white;border-radius:50%"></div></div>
+                </div>
+                <div style="display:flex;align-items:center;justify-content:space-between;padding:12px;background:var(--slate-50);border-radius:var(--radius-md)">
+                  <div><strong style="font-size:13px">Hasil Laboratorium</strong><br><span style="font-size:12px;color:var(--slate-400)">Push notification</span></div>
+                  <div style="width:40px;height:22px;background:var(--slate-300);border-radius:20px;cursor:pointer;position:relative"><div style="position:absolute;left:2px;top:2px;width:18px;height:18px;background:white;border-radius:50%"></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div><!-- /cust-profil -->
+
+      </div><!-- /dash-content -->
+    </div><!-- /dash-main -->
+  </div><!-- /dash-layout -->
+</div><!-- /view-customer -->
+
+
+<!-- ============================================================
+     VIEW 3: DASHBOARD DOKTER
+     ============================================================ -->
+<div id="view-doctor" class="view">
+  <div class="dash-layout">
+    <aside class="sidebar">
+      <div class="sidebar-logo">
+        <div class="logo-mark">
+          <div class="logo-icon"><i data-lucide="stethoscope" style="width:18px;height:18px;color:white"></i></div>
+          <div class="logo-text"><strong>VetCare</strong><span>Portal Dokter</span></div>
+        </div>
+      </div>
+      <div class="sidebar-user">
+        <div class="avatar">AP</div>
+        <div class="user-info"><strong>drh. Anisa Putri</strong><span>Dokter Hewan</span></div>
+      </div>
+      <nav class="sidebar-nav">
+        <div class="nav-section-label">Utama</div>
+        <div class="nav-item active" onclick="showDoctorPage('beranda')">
+          <i data-lucide="layout-dashboard" style="width:16px;height:16px"></i> Beranda
+        </div>
+        <div class="nav-item" onclick="showDoctorPage('antrian')">
+          <i data-lucide="list-ordered" style="width:16px;height:16px"></i> Antrian Hari Ini
+          <span class="badge">5</span>
+        </div>
+        <div class="nav-item" onclick="showDoctorPage('rekam')">
+          <i data-lucide="file-text" style="width:16px;height:16px"></i> Rekam Medis
+        </div>
+        <div class="nav-item" onclick="showDoctorPage('jadwal')">
+          <i data-lucide="calendar" style="width:16px;height:16px"></i> Jadwal Saya
+        </div>
+        <div class="nav-item" onclick="showDoctorPage('chat-dokter')">
+          <i data-lucide="message-square" style="width:16px;height:16px"></i> Chat Konsultasi
+          <span class="badge">2</span>
+        </div>
+        <div class="nav-section-label">Data</div>
+        <div class="nav-item" onclick="showDoctorPage('riwayat-pasien')">
+          <i data-lucide="search" style="width:16px;height:16px"></i> Riwayat Pasien
+        </div>
+        <div class="nav-item" onclick="showDoctorPage('laporan')">
+          <i data-lucide="bar-chart-2" style="width:16px;height:16px"></i> Laporan Harian
+        </div>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="nav-item" onclick="switchView('landing')">
+          <i data-lucide="log-out" style="width:16px;height:16px"></i> Keluar
+        </div>
+      </div>
+    </aside>
+
+    <div class="dash-main">
+      <div class="dash-topbar">
+        <div class="dash-topbar-left">
+          <h1 id="doc-page-title">Beranda</h1>
+          <p id="doc-page-sub">Senin, 9 Juni 2025</p>
+        </div>
+        <div class="dash-topbar-right">
+          <button class="icon-btn"><i data-lucide="bell" style="width:16px;height:16px"></i><span class="dot"></span></button>
+          <div class="avatar">AP</div>
+        </div>
+      </div>
+
+      <div class="dash-content">
+
+        <!-- BERANDA DOKTER -->
+        <div id="doc-beranda">
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-icon teal"><i data-lucide="users" style="width:22px;height:22px"></i></div>
+              <div class="stat-info"><div class="label">Pasien Hari Ini</div><div class="value">12</div><div class="change up"><i data-lucide="trending-up" style="width:12px;height:12px"></i> +2 dari kemarin</div></div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon amber"><i data-lucide="clock" style="width:22px;height:22px"></i></div>
+              <div class="stat-info"><div class="label">Antrian Menunggu</div><div class="value">5</div><div class="change"><i data-lucide="loader" style="width:12px;height:12px;color:var(--amber-500)"></i> 2 prioritas</div></div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon green"><i data-lucide="check-circle" style="width:22px;height:22px"></i></div>
+              <div class="stat-info"><div class="label">Selesai Ditangani</div><div class="value">7</div><div class="change up"><i data-lucide="trending-up" style="width:12px;height:12px"></i> Baik!</div></div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon rose"><i data-lucide="message-square" style="width:22px;height:22px"></i></div>
+              <div class="stat-info"><div class="label">Chat Belum Dibalas</div><div class="value">2</div><div class="change"><i data-lucide="info" style="width:12px;height:12px;color:var(--rose-500)"></i> Segera balas</div></div>
+            </div>
+          </div>
+
+          <div class="grid-2">
+            <!-- Antrian Sekarang -->
+            <div class="card">
+              <div class="card-header">
+                <h3>Antrian Hari Ini</h3>
+                <button class="btn-ghost btn" onclick="showDoctorPage('antrian')">Lihat Semua</button>
+              </div>
+              <div class="card-body" style="padding:12px">
+                <div class="queue-list">
+                  <div class="queue-item">
+                    <div class="queue-num current">1</div>
+                    <div class="qi-info"><strong>Bola (Golden Retriever)</strong><span>Pemilik: Bagas H. &bull; Pemeriksaan Umum</span></div>
+                    <div class="qi-right"><span class="badge-status status-active">Sedang Diperiksa</span><div class="qi-time">09.15</div></div>
+                  </div>
+                  <div class="queue-item">
+                    <div class="queue-num">2</div>
+                    <div class="qi-info"><strong>Luna (Kucing Maine Coon)</strong><span>Pemilik: Dewi P. &bull; Vaksinasi</span></div>
+                    <div class="qi-right"><span class="badge-status status-waiting">Menunggu</span><div class="qi-time">09.45</div></div>
+                  </div>
+                  <div class="queue-item">
+                    <div class="queue-num">3</div>
+                    <div class="qi-info"><strong>Rex (Rottweiler)</strong><span>Pemilik: Ahmad S. &bull; Dermatitis</span></div>
+                    <div class="qi-right"><span class="badge-status status-waiting">Menunggu</span><div class="qi-time">10.00</div></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Mini Calendar -->
+            <div class="card">
+              <div class="card-header"><h3>Kalender Jadwal</h3></div>
+              <div class="card-body">
+                <div class="mini-cal">
+                  <div class="mini-cal-header">
+                    <button class="icon-btn" style="width:28px;height:28px"><i data-lucide="chevron-left" style="width:14px;height:14px"></i></button>
+                    <span>Juni 2025</span>
+                    <button class="icon-btn" style="width:28px;height:28px"><i data-lucide="chevron-right" style="width:14px;height:14px"></i></button>
+                  </div>
+                  <div class="mini-cal-grid">
+                    <div class="day-name">Min</div><div class="day-name">Sen</div><div class="day-name">Sel</div><div class="day-name">Rab</div><div class="day-name">Kam</div><div class="day-name">Jum</div><div class="day-name">Sab</div>
+                    <div class="cal-day other-month">1</div><div class="cal-day other-month">2</div><div class="cal-day other-month">3</div><div class="cal-day other-month">4</div><div class="cal-day other-month">5</div><div class="cal-day other-month">6</div><div class="cal-day other-month">7</div>
+                    <div class="cal-day other-month">8</div><div class="cal-day today">9</div><div class="cal-day has-event">10</div><div class="cal-day has-event">11</div><div class="cal-day">12</div><div class="cal-day">13</div><div class="cal-day">14</div>
+                    <div class="cal-day has-event">15</div><div class="cal-day has-event">16</div><div class="cal-day">17</div><div class="cal-day">18</div><div class="cal-day">19</div><div class="cal-day">20</div><div class="cal-day">21</div>
+                    <div class="cal-day">22</div><div class="cal-day">23</div><div class="cal-day has-event">24</div><div class="cal-day">25</div><div class="cal-day">26</div><div class="cal-day">27</div><div class="cal-day">28</div>
+                    <div class="cal-day">29</div><div class="cal-day">30</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div><!-- /doc-beranda -->
+
+        <!-- ANTRIAN DOKTER -->
+        <div id="doc-antrian" style="display:none">
+          <div class="queue-list" style="margin-bottom:20px">
+            <div class="queue-item" style="border-left:3px solid var(--teal-500)">
+              <div class="queue-num current">1</div>
+              <div class="qi-info"><strong>Bola (Golden Retriever)</strong><span>Pemilik: Bagas Hendra &bull; Pemeriksaan Umum</span></div>
+              <div class="qi-right" style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">
+                <span class="badge-status status-active">Sedang Diperiksa</span>
+                <div style="display:flex;gap:6px">
+                  <button class="btn btn-primary btn-sm">Rekam Medis</button>
+                  <button class="btn btn-outline btn-sm">Selesai</button>
+                </div>
+              </div>
+            </div>
+            <div class="queue-item">
+              <div class="queue-num">2</div>
+              <div class="qi-info"><strong>Luna (Maine Coon)</strong><span>Pemilik: Dewi Pratiwi &bull; Vaksinasi</span></div>
+              <div class="qi-right" style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">
+                <span class="badge-status status-waiting">Menunggu</span>
+                <button class="btn btn-outline btn-sm">Panggil</button>
+              </div>
+            </div>
+            <div class="queue-item">
+              <div class="queue-num">3</div>
+              <div class="qi-info"><strong>Rex (Rottweiler)</strong><span>Pemilik: Ahmad Susanto &bull; Dermatitis</span></div>
+              <div class="qi-right" style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">
+                <span class="badge-status status-waiting">Menunggu</span>
+                <button class="btn btn-outline btn-sm">Panggil</button>
+              </div>
+            </div>
+            <div class="queue-item">
+              <div class="queue-num">4</div>
+              <div class="qi-info"><strong>Mochi (Hamster)</strong><span>Pemilik: Lia Kusuma &bull; Konsultasi</span></div>
+              <div class="qi-right" style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">
+                <span class="badge-status status-waiting">Menunggu</span>
+                <button class="btn btn-outline btn-sm">Panggil</button>
+              </div>
+            </div>
+            <div class="queue-item">
+              <div class="queue-num">5</div>
+              <div class="qi-info"><strong>Coco (Cockatiel)</strong><span>Pemilik: Rizky M. &bull; Pemeriksaan</span></div>
+              <div class="qi-right" style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">
+                <span class="badge-status status-waiting">Menunggu</span>
+                <button class="btn btn-outline btn-sm">Panggil</button>
+              </div>
+            </div>
+          </div>
+        </div><!-- /doc-antrian -->
+
+        <!-- REKAM MEDIS DOKTER -->
+        <div id="doc-rekam" style="display:none">
+          <div class="grid-2">
+            <div class="card" style="grid-column:1/-1">
+              <div class="card-header">
+                <h3>Input Rekam Medis — Bola (Golden Retriever)</h3>
+                <span style="font-size:12px;color:var(--slate-400)">Pemilik: Bagas Hendra</span>
+              </div>
+              <div class="card-body" style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+                <div style="display:flex;flex-direction:column;gap:10px">
+                  <div class="form-field" style="gap:4px">
+                    <label style="font-size:11px;font-weight:600;color:var(--slate-500)">Keluhan Utama</label>
+                    <textarea style="border:1px solid var(--slate-300);border-radius:6px;padding:8px 12px;font-size:13px;font-family:var(--font-body);outline:none;resize:none;height:70px;transition:var(--transition)">Kulit merah dan gatal di area perut sejak 3 hari lalu</textarea>
+                  </div>
+                  <div class="form-field" style="gap:4px">
+                    <label style="font-size:11px;font-weight:600;color:var(--slate-500)">Pemeriksaan Fisik</label>
+                    <textarea style="border:1px solid var(--slate-300);border-radius:6px;padding:8px 12px;font-size:13px;font-family:var(--font-body);outline:none;resize:none;height:70px;transition:var(--transition)">Kondisi umum baik. Suhu 38.8°C. Lesi erythema di ventral abdomen.</textarea>
+                  </div>
+                  <div class="form-field" style="gap:4px">
+                    <label style="font-size:11px;font-weight:600;color:var(--slate-500)">Diagnosis</label>
+                    <input type="text" value="Dermatitis allergica" style="border:1px solid var(--slate-300);border-radius:6px;padding:8px 12px;font-size:13px;font-family:var(--font-body);outline:none;width:100%">
+                  </div>
+                </div>
+                <div style="display:flex;flex-direction:column;gap:10px">
+                  <div class="form-field" style="gap:4px">
+                    <label style="font-size:11px;font-weight:600;color:var(--slate-500)">Tindakan</label>
+                    <textarea style="border:1px solid var(--slate-300);border-radius:6px;padding:8px 12px;font-size:13px;font-family:var(--font-body);outline:none;resize:none;height:70px">Pemberian antihistamin + salep kortikosteroid topikal</textarea>
+                  </div>
+                  <div class="form-field" style="gap:4px">
+                    <label style="font-size:11px;font-weight:600;color:var(--slate-500)">Resep Obat</label>
+                    <textarea style="border:1px solid var(--slate-300);border-radius:6px;padding:8px 12px;font-size:13px;font-family:var(--font-body);outline:none;resize:none;height:70px">1. Cetirizine 10mg — 1x sehari 7 hari
+2. Hydrocortisone cream — 2x sehari (tipis)</textarea>
+                  </div>
+                  <div class="form-field" style="gap:4px">
+                    <label style="font-size:11px;font-weight:600;color:var(--slate-500)">Follow-up</label>
+                    <input type="text" value="Kontrol 1 minggu lagi" style="border:1px solid var(--slate-300);border-radius:6px;padding:8px 12px;font-size:13px;font-family:var(--font-body);outline:none;width:100%">
+                  </div>
+                </div>
+                <div style="grid-column:1/-1;display:flex;gap:10px">
+                  <button class="btn btn-primary"><i data-lucide="save" style="width:15px;height:15px"></i> Simpan Rekam Medis</button>
+                  <button class="btn btn-outline"><i data-lucide="printer" style="width:15px;height:15px"></i> Cetak</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div><!-- /doc-rekam -->
+
+        <!-- JADWAL DOKTER -->
+        <div id="doc-jadwal" style="display:none">
+          <div class="card">
+            <div class="card-header"><h3>Jadwal Praktik — Juni 2025</h3><button class="btn btn-primary btn-sm"><i data-lucide="plus" style="width:13px;height:13px"></i> Tambah Slot</button></div>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Hari</th><th>Jam Mulai</th><th>Jam Selesai</th><th>Maks Pasien</th><th>Status</th><th>Aksi</th></tr></thead>
+                <tbody>
+                  <tr><td>Senin</td><td>08.00</td><td>14.00</td><td>15</td><td><span class="badge-status status-confirmed">Aktif</span></td><td><button class="btn btn-outline btn-sm">Edit</button></td></tr>
+                  <tr><td>Selasa</td><td>08.00</td><td>14.00</td><td>15</td><td><span class="badge-status status-confirmed">Aktif</span></td><td><button class="btn btn-outline btn-sm">Edit</button></td></tr>
+                  <tr><td>Rabu</td><td>-</td><td>-</td><td>-</td><td><span class="badge-status status-low">Cuti</span></td><td><button class="btn btn-outline btn-sm">Edit</button></td></tr>
+                  <tr><td>Kamis</td><td>14.00</td><td>20.00</td><td>12</td><td><span class="badge-status status-confirmed">Aktif</span></td><td><button class="btn btn-outline btn-sm">Edit</button></td></tr>
+                  <tr><td>Jumat</td><td>08.00</td><td>14.00</td><td>15</td><td><span class="badge-status status-confirmed">Aktif</span></td><td><button class="btn btn-outline btn-sm">Edit</button></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div><!-- /doc-jadwal -->
+
+        <!-- CHAT DOKTER -->
+        <div id="doc-chat-dokter" style="display:none">
+          <div class="chat-layout">
+            <div class="chat-list">
+              <div style="padding:12px 14px;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--slate-400);border-bottom:1px solid var(--slate-200)">Pasien</div>
+              <div class="chat-item active">
+                <div class="avatar" style="font-size:12px">SR</div>
+                <div class="ci-info"><strong>Sari Rahayu</strong><span>Hasil lab sudah ada...</span></div>
+              </div>
+              <div class="chat-item">
+                <div class="avatar" style="background:var(--amber-500);font-size:12px">BH</div>
+                <div class="ci-info"><strong>Bagas Hendra</strong><span>Terima kasih dok</span></div>
+              </div>
+            </div>
+            <div class="chat-main">
+              <div class="chat-topbar">
+                <div class="avatar" style="font-size:12px;width:32px;height:32px">SR</div>
+                <div>
+                  <strong style="font-size:13px;font-weight:600">Sari Rahayu</strong>
+                  <div style="display:flex;align-items:center;gap:4px"><div class="online-dot"></div><span style="font-size:11px;color:var(--slate-400)">Online — Max, Kucing Persia</span></div>
+                </div>
+                <div style="margin-left:auto;display:flex;gap:8px">
+                  <button class="btn btn-outline btn-sm" style="gap:6px"><i data-lucide="file-text" style="width:12px;height:12px"></i> Rekam Medis</button>
+                </div>
+              </div>
+              <div class="chat-messages">
+                <div class="msg msg-out">Selamat pagi Bu Sari. Hasil lab Max sudah keluar. Semuanya normal.<div class="msg-time">09.15</div></div>
+                <div class="msg msg-in">Alhamdulillah, terima kasih dok! Apa ada yang perlu diperhatikan?<div class="msg-time">09.22</div></div>
+                <div class="msg msg-out">Tidak ada yang mengkhawatirkan. Lanjutkan pola makan sekarang dan pastikan minum air yang cukup ya.<div class="msg-time">09.24</div></div>
+              </div>
+              <div class="chat-input-bar">
+                <button class="icon-btn"><i data-lucide="paperclip" style="width:15px;height:15px"></i></button>
+                <input type="text" class="chat-input" placeholder="Tulis pesan ke pasien..." />
+                <button class="btn btn-primary btn-sm" style="border-radius:8px"><i data-lucide="send" style="width:14px;height:14px"></i></button>
+              </div>
+            </div>
+          </div>
+        </div><!-- /doc-chat-dokter -->
+
+        <!-- RIWAYAT PASIEN -->
+        <div id="doc-riwayat-pasien" style="display:none">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
+            <input type="text" placeholder="Cari nama hewan atau pemilik..." style="border:1px solid var(--slate-300);border-radius:8px;padding:8px 14px;font-size:13px;font-family:var(--font-body);outline:none;width:300px">
+            <button class="btn btn-primary btn-sm"><i data-lucide="search" style="width:13px;height:13px"></i> Cari</button>
+          </div>
+          <div class="card">
+            <div class="card-header"><h3>Riwayat Semua Pasien</h3></div>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Tanggal</th><th>Hewan (Pemilik)</th><th>Diagnosis</th><th>Tindakan</th><th>Monitoring</th><th>Aksi</th></tr></thead>
+                <tbody>
+                  <tr><td>9 Jun 2025</td><td><span class="td-name">Bola <span style="color:var(--slate-400);font-weight:400">(Bagas H.)</span></span></td><td>Dermatitis allergica</td><td>Antihistamin + Salep</td><td><button class="btn btn-ghost" style="font-size:11px;gap:4px"><i data-lucide="activity" style="width:12px;height:12px"></i> Lihat</button></td><td><button class="btn btn-outline btn-sm">Detail</button></td></tr>
+                  <tr><td>8 Jun 2025</td><td><span class="td-name">Luna <span style="color:var(--slate-400);font-weight:400">(Dewi P.)</span></span></td><td>Vaksinasi Rabies</td><td>Injeksi vaksin</td><td>-</td><td><button class="btn btn-outline btn-sm">Detail</button></td></tr>
+                  <tr><td>7 Jun 2025</td><td><span class="td-name">Max <span style="color:var(--slate-400);font-weight:400">(Sari R.)</span></span></td><td>Lab — Normal</td><td>Pemeriksaan darah</td><td><button class="btn btn-ghost" style="font-size:11px;gap:4px"><i data-lucide="activity" style="width:12px;height:12px"></i> Lihat</button></td><td><button class="btn btn-outline btn-sm">Detail</button></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div><!-- /doc-riwayat-pasien -->
+
+        <!-- LAPORAN HARIAN -->
+        <div id="doc-laporan" style="display:none">
+          <div class="stats-grid" style="grid-template-columns:repeat(3,1fr)">
+            <div class="stat-card"><div class="stat-icon teal"><i data-lucide="users" style="width:22px;height:22px"></i></div><div class="stat-info"><div class="label">Total Pasien Ditangani</div><div class="value">12</div></div></div>
+            <div class="stat-card"><div class="stat-icon green"><i data-lucide="syringe" style="width:22px;height:22px"></i></div><div class="stat-info"><div class="label">Vaksinasi</div><div class="value">4</div></div></div>
+            <div class="stat-card"><div class="stat-icon amber"><i data-lucide="stethoscope" style="width:22px;height:22px"></i></div><div class="stat-info"><div class="label">Pemeriksaan Umum</div><div class="value">8</div></div></div>
+          </div>
+          <div class="card">
+            <div class="card-header"><h3>Rekap Pasien Hari Ini — 9 Juni 2025</h3></div>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>No</th><th>Hewan</th><th>Layanan</th><th>Diagnosis</th><th>Waktu Selesai</th></tr></thead>
+                <tbody>
+                  <tr><td>1</td><td>Max (Kucing)</td><td>Pemeriksaan Umum</td><td>Sehat</td><td>09.30</td></tr>
+                  <tr><td>2</td><td>Luna (Kucing)</td><td>Vaksinasi</td><td>Vaksinasi sukses</td><td>09.55</td></tr>
+                  <tr><td>3</td><td>Remi (Kelinci)</td><td>Konsultasi</td><td>Nutrisi</td><td>10.25</td></tr>
+                  <tr><td>4</td><td>Bola (Anjing)</td><td>Sedang Ditangani</td><td>Dermatitis</td><td>—</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div><!-- /doc-laporan -->
+
+      </div><!-- /dash-content -->
+    </div><!-- /dash-main -->
+  </div><!-- /dash-layout -->
+</div><!-- /view-doctor -->
+
+
+<!-- ============================================================
+     VIEW 4: DASHBOARD ADMIN
+     ============================================================ -->
+<div id="view-admin" class="view">
+  <div class="dash-layout">
+    <aside class="sidebar">
+      <div class="sidebar-logo">
+        <div class="logo-mark">
+          <div class="logo-icon"><i data-lucide="shield" style="width:18px;height:18px;color:white"></i></div>
+          <div class="logo-text"><strong>VetCare</strong><span>Admin Panel</span></div>
+        </div>
+      </div>
+      <div class="sidebar-user">
+        <div class="avatar" style="background:var(--amber-500)">AD</div>
+        <div class="user-info"><strong>Admin Klinik</strong><span>Administrator</span></div>
+      </div>
+      <nav class="sidebar-nav">
+        <div class="nav-section-label">Overview</div>
+        <div class="nav-item active" onclick="showAdminPage('beranda')">
+          <i data-lucide="layout-dashboard" style="width:16px;height:16px"></i> Beranda
+        </div>
+        <div class="nav-section-label">Manajemen</div>
+        <div class="nav-item" onclick="showAdminPage('user')">
+          <i data-lucide="users" style="width:16px;height:16px"></i> Manajemen User
+        </div>
+        <div class="nav-item" onclick="showAdminPage('appointment-admin')">
+          <i data-lucide="calendar" style="width:16px;height:16px"></i> Appointment
+        </div>
+        <div class="nav-item" onclick="showAdminPage('jadwal-dokter')">
+          <i data-lucide="clock" style="width:16px;height:16px"></i> Jadwal Dokter
+        </div>
+        <div class="nav-item" onclick="showAdminPage('inventory')">
+          <i data-lucide="package" style="width:16px;height:16px"></i> Inventory & Obat
+          <span class="badge" style="background:var(--rose-500)">3</span>
+        </div>
+        <div class="nav-section-label">Laporan</div>
+        <div class="nav-item" onclick="showAdminPage('keuangan')">
+          <i data-lucide="bar-chart-2" style="width:16px;height:16px"></i> Keuangan
+        </div>
+        <div class="nav-item" onclick="showAdminPage('rekam-admin')">
+          <i data-lucide="file-text" style="width:16px;height:16px"></i> Rekam Medis
+        </div>
+        <div class="nav-section-label">Pengaturan</div>
+        <div class="nav-item" onclick="showAdminPage('pengaturan')">
+          <i data-lucide="settings" style="width:16px;height:16px"></i> Pengaturan Klinik
+        </div>
+        <div class="nav-item" onclick="showAdminPage('notifikasi-admin')">
+          <i data-lucide="bell" style="width:16px;height:16px"></i> Notifikasi
+        </div>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="nav-item" onclick="switchView('landing')">
+          <i data-lucide="log-out" style="width:16px;height:16px"></i> Keluar
+        </div>
+      </div>
+    </aside>
+
+    <div class="dash-main">
+      <div class="dash-topbar">
+        <div class="dash-topbar-left">
+          <h1 id="adm-page-title">Beranda</h1>
+          <p id="adm-page-sub">Senin, 9 Juni 2025</p>
+        </div>
+        <div class="dash-topbar-right">
+          <button class="btn btn-outline btn-sm"><i data-lucide="download" style="width:13px;height:13px"></i> Export</button>
+          <button class="icon-btn"><i data-lucide="bell" style="width:16px;height:16px"></i><span class="dot"></span></button>
+          <div class="avatar" style="background:var(--amber-500);cursor:pointer">AD</div>
+        </div>
+      </div>
+
+      <div class="dash-content">
+
+        <!-- BERANDA ADMIN -->
+        <div id="adm-beranda">
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-icon teal"><i data-lucide="users" style="width:22px;height:22px"></i></div>
+              <div class="stat-info"><div class="label">Pasien Hari Ini</div><div class="value">47</div><div class="change up"><i data-lucide="trending-up" style="width:12px;height:12px"></i> +8 dari kemarin</div></div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon green"><i data-lucide="banknote" style="width:22px;height:22px"></i></div>
+              <div class="stat-info"><div class="label">Pendapatan Hari Ini</div><div class="value" style="font-size:20px">12.4jt</div><div class="change up"><i data-lucide="trending-up" style="width:12px;height:12px"></i> +15% vs kemarin</div></div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon amber"><i data-lucide="list-ordered" style="width:22px;height:22px"></i></div>
+              <div class="stat-info"><div class="label">Antrian Aktif</div><div class="value">18</div><div class="change"><i data-lucide="loader" style="width:12px;height:12px;color:var(--amber-500)"></i> 3 dokter bertugas</div></div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon rose"><i data-lucide="package" style="width:22px;height:22px"></i></div>
+              <div class="stat-info"><div class="label">Stok Obat Kritis</div><div class="value">3</div><div class="change"><i data-lucide="alert-triangle" style="width:12px;height:12px;color:var(--rose-500)"></i> Perlu restok</div></div>
+            </div>
+          </div>
+
+          <div class="grid-2" style="margin-bottom:20px">
+            <!-- Revenue Chart -->
+            <div class="card">
+              <div class="card-header">
+                <h3>Pendapatan 7 Hari Terakhir</h3>
+                <button class="btn-ghost btn">Rp</button>
+              </div>
+              <div class="card-body">
+                <div class="rev-chart">
+                  <div class="rev-bar-wrap"><div class="rev-bar" style="height:60%"></div><span>Sen</span></div>
+                  <div class="rev-bar-wrap"><div class="rev-bar" style="height:75%"></div><span>Sel</span></div>
+                  <div class="rev-bar-wrap"><div class="rev-bar" style="height:55%"></div><span>Rab</span></div>
+                  <div class="rev-bar-wrap"><div class="rev-bar" style="height:85%"></div><span>Kam</span></div>
+                  <div class="rev-bar-wrap"><div class="rev-bar" style="height:70%"></div><span>Jum</span></div>
+                  <div class="rev-bar-wrap"><div class="rev-bar" style="height:90%"></div><span>Sab</span></div>
+                  <div class="rev-bar-wrap"><div class="rev-bar" style="height:100%"></div><span>Min</span></div>
+                </div>
+              </div>
+            </div>
+            <!-- Stok Kritis -->
+            <div class="card">
+              <div class="card-header"><h3>Stok Obat Kritis</h3><button class="btn-ghost btn" onclick="showAdminPage('inventory')">Lihat Semua</button></div>
+              <div class="card-body" style="display:flex;flex-direction:column;gap:12px">
+                <div>
+                  <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:3px"><strong>Amoxicillin 500mg</strong><span style="color:var(--rose-500);font-weight:700">3 / 50</span></div>
+                  <div class="inv-stock-bar"><div class="inv-stock-fill low" style="width:6%"></div></div>
+                </div>
+                <div>
+                  <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:3px"><strong>Cetirizine 10mg</strong><span style="color:var(--amber-500);font-weight:700">12 / 100</span></div>
+                  <div class="inv-stock-bar"><div class="inv-stock-fill warn" style="width:12%"></div></div>
+                </div>
+                <div>
+                  <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:3px"><strong>Vaksin Rabies</strong><span style="color:var(--rose-500);font-weight:700">5 / 40</span></div>
+                  <div class="inv-stock-bar"><div class="inv-stock-fill low" style="width:12.5%"></div></div>
+                </div>
+                <div>
+                  <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:3px"><strong>NaCl 0.9% 500ml</strong><span style="color:var(--teal-600);font-weight:700">28 / 40</span></div>
+                  <div class="inv-stock-bar"><div class="inv-stock-fill" style="width:70%"></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Appointment Hari Ini -->
+          <div class="card">
+            <div class="card-header"><h3>Appointment Hari Ini</h3><button class="btn btn-primary btn-sm"><i data-lucide="plus" style="width:13px;height:13px"></i> Tambah</button></div>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Waktu</th><th>Pasien</th><th>Hewan</th><th>Layanan</th><th>Dokter</th><th>Status</th><th>Aksi</th></tr></thead>
+                <tbody>
+                  <tr><td>09.00</td><td>Bagas Hendra</td><td>Bola (Anjing)</td><td>Pemeriksaan</td><td>drh. Anisa</td><td><span class="badge-status status-active">Sedang Diperiksa</span></td><td><div style="display:flex;gap:6px"><button class="btn btn-outline btn-sm">Edit</button><button class="btn btn-danger btn-sm">Batal</button></div></td></tr>
+                  <tr><td>09.45</td><td>Dewi Pratiwi</td><td>Luna (Kucing)</td><td>Vaksinasi</td><td>drh. Anisa</td><td><span class="badge-status status-waiting">Menunggu</span></td><td><div style="display:flex;gap:6px"><button class="btn btn-outline btn-sm">Konfirmasi</button></div></td></tr>
+                  <tr><td>10.30</td><td>Sari Rahayu</td><td>Max (Kucing)</td><td>Vaksinasi</td><td>drh. Budi</td><td><span class="badge-status status-pending">Pending</span></td><td><div style="display:flex;gap:6px"><button class="btn btn-outline btn-sm">Konfirmasi</button><button class="btn btn-danger btn-sm">Batal</button></div></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div><!-- /adm-beranda -->
+
+        <!-- MANAJEMEN USER -->
+        <div id="adm-user" style="display:none">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+            <div style="display:flex;gap:8px">
+              <button class="btn btn-primary btn-sm">Pelanggan</button>
+              <button class="btn btn-outline btn-sm">Dokter</button>
+              <button class="btn btn-outline btn-sm">Staff</button>
+            </div>
+            <button class="btn btn-primary btn-sm"><i data-lucide="user-plus" style="width:13px;height:13px"></i> Tambah User</button>
+          </div>
+          <div class="card">
+            <div class="card-header"><h3>Daftar Pelanggan</h3></div>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Nama</th><th>Email</th><th>No. HP</th><th>Jumlah Hewan</th><th>Total Kunjungan</th><th>Status</th><th>Aksi</th></tr></thead>
+                <tbody>
+                  <tr><td><span class="td-name"><div class="avatar" style="width:28px;height:28px;font-size:11px">SR</div>Sari Rahayu</span></td><td>sari@email.com</td><td>+62 812 3456</td><td>3</td><td>18</td><td><span class="badge-status status-confirmed">Aktif</span></td><td><div style="display:flex;gap:4px"><button class="btn btn-outline btn-sm">Edit</button><button class="btn btn-danger btn-sm">Nonaktif</button></div></td></tr>
+                  <tr><td><span class="td-name"><div class="avatar" style="width:28px;height:28px;font-size:11px;background:var(--amber-500)">BH</div>Bagas Hendra</span></td><td>bagas@email.com</td><td>+62 813 7890</td><td>1</td><td>7</td><td><span class="badge-status status-confirmed">Aktif</span></td><td><div style="display:flex;gap:4px"><button class="btn btn-outline btn-sm">Edit</button><button class="btn btn-danger btn-sm">Nonaktif</button></div></td></tr>
+                  <tr><td><span class="td-name"><div class="avatar" style="width:28px;height:28px;font-size:11px;background:var(--rose-500)">DP</div>Dewi Pratiwi</span></td><td>dewi@email.com</td><td>+62 856 4321</td><td>2</td><td>12</td><td><span class="badge-status status-pending">Baru</span></td><td><div style="display:flex;gap:4px"><button class="btn btn-outline btn-sm">Aktifkan</button></div></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div><!-- /adm-user -->
+
+        <!-- INVENTORY -->
+        <div id="adm-inventory" style="display:none">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+            <div style="display:flex;gap:8px;align-items:center">
+              <input type="text" placeholder="Cari obat..." style="border:1px solid var(--slate-300);border-radius:8px;padding:8px 12px;font-size:13px;font-family:var(--font-body);outline:none;width:200px">
+              <select style="border:1px solid var(--slate-300);border-radius:8px;padding:8px 12px;font-size:13px;font-family:var(--font-body);outline:none;color:var(--slate-700)">
+                <option>Semua Kategori</option><option>Antibiotik</option><option>Vaksin</option><option>Antihistamin</option>
+              </select>
+            </div>
+            <button class="btn btn-primary btn-sm"><i data-lucide="plus" style="width:13px;height:13px"></i> Tambah Obat</button>
+          </div>
+          <div class="card">
+            <div class="card-header"><h3>Stok Obat & Perlengkapan</h3></div>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Nama Obat</th><th>Kategori</th><th>Stok</th><th>Min. Stok</th><th>Stok Tersisa</th><th>Status</th><th>Aksi</th></tr></thead>
+                <tbody>
+                  <tr><td style="font-weight:600">Amoxicillin 500mg</td><td>Antibiotik</td><td>3</td><td>20</td><td><div style="width:80px"><div class="inv-stock-bar"><div class="inv-stock-fill low" style="width:6%"></div></div></div></td><td><span class="badge-status status-low">Kritis</span></td><td><button class="btn btn-primary btn-sm">Restok</button></td></tr>
+                  <tr><td style="font-weight:600">Vaksin Rabies</td><td>Vaksin</td><td>5</td><td>15</td><td><div style="width:80px"><div class="inv-stock-bar"><div class="inv-stock-fill low" style="width:12.5%"></div></div></div></td><td><span class="badge-status status-low">Kritis</span></td><td><button class="btn btn-primary btn-sm">Restok</button></td></tr>
+                  <tr><td style="font-weight:600">Cetirizine 10mg</td><td>Antihistamin</td><td>12</td><td>30</td><td><div style="width:80px"><div class="inv-stock-bar"><div class="inv-stock-fill warn" style="width:12%"></div></div></div></td><td><span class="badge-status status-pending">Rendah</span></td><td><button class="btn btn-outline btn-sm">Restok</button></td></tr>
+                  <tr><td style="font-weight:600">NaCl 0.9% 500ml</td><td>Infus</td><td>28</td><td>10</td><td><div style="width:80px"><div class="inv-stock-bar"><div class="inv-stock-fill" style="width:70%"></div></div></div></td><td><span class="badge-status status-confirmed">Normal</span></td><td><button class="btn btn-outline btn-sm">Edit</button></td></tr>
+                  <tr><td style="font-weight:600">Dexamethasone 5mg</td><td>Kortikosteroid</td><td>45</td><td>20</td><td><div style="width:80px"><div class="inv-stock-bar"><div class="inv-stock-fill" style="width:90%"></div></div></div></td><td><span class="badge-status status-confirmed">Normal</span></td><td><button class="btn btn-outline btn-sm">Edit</button></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div><!-- /adm-inventory -->
+
+        <!-- KEUANGAN -->
+        <div id="adm-keuangan" style="display:none">
+          <div class="stats-grid" style="grid-template-columns:repeat(3,1fr);margin-bottom:20px">
+            <div class="stat-card"><div class="stat-icon green"><i data-lucide="trending-up" style="width:22px;height:22px"></i></div><div class="stat-info"><div class="label">Pendapatan Bulan Ini</div><div class="value" style="font-size:20px">248jt</div><div class="change up"><i data-lucide="trending-up" style="width:12px;height:12px"></i> +12% vs bulan lalu</div></div></div>
+            <div class="stat-card"><div class="stat-icon rose"><i data-lucide="trending-down" style="width:22px;height:22px"></i></div><div class="stat-info"><div class="label">Pengeluaran Bulan Ini</div><div class="value" style="font-size:20px">89jt</div><div class="change down"><i data-lucide="trending-down" style="width:12px;height:12px"></i> Termasuk restok</div></div></div>
+            <div class="stat-card"><div class="stat-icon teal"><i data-lucide="wallet" style="width:22px;height:22px"></i></div><div class="stat-info"><div class="label">Laba Bersih</div><div class="value" style="font-size:20px">159jt</div><div class="change up"><i data-lucide="trending-up" style="width:12px;height:12px"></i> Margin 64%</div></div></div>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <h3>Laporan Invoice</h3>
+              <div style="display:flex;gap:8px">
+                <button class="btn btn-outline btn-sm"><i data-lucide="download" style="width:12px;height:12px"></i> Excel</button>
+                <button class="btn btn-outline btn-sm"><i data-lucide="download" style="width:12px;height:12px"></i> PDF</button>
+              </div>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>No. Invoice</th><th>Pelanggan</th><th>Layanan</th><th>Total</th><th>Tanggal</th><th>Status</th></tr></thead>
+                <tbody>
+                  <tr><td style="color:var(--teal-700);font-weight:600">#INV-2025-0345</td><td>Sari Rahayu</td><td>Vaksinasi — Max</td><td style="font-weight:700">Rp 350.000</td><td>10 Jun 2025</td><td><span class="badge-status status-pending">Belum Bayar</span></td></tr>
+                  <tr><td style="color:var(--teal-700);font-weight:600">#INV-2025-0344</td><td>Bagas Hendra</td><td>Pemeriksaan + Obat</td><td style="font-weight:700">Rp 520.000</td><td>9 Jun 2025</td><td><span class="badge-status status-done">Lunas</span></td></tr>
+                  <tr><td style="color:var(--teal-700);font-weight:600">#INV-2025-0343</td><td>Dewi Pratiwi</td><td>Grooming Luna</td><td style="font-weight:700">Rp 200.000</td><td>9 Jun 2025</td><td><span class="badge-status status-done">Lunas</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div><!-- /adm-keuangan -->
+
+        <!-- PENGATURAN KLINIK -->
+        <div id="adm-pengaturan" style="display:none">
+          <div class="grid-2">
+            <div class="card">
+              <div class="card-header"><h3>Profil Klinik</h3></div>
+              <div class="card-body" style="display:flex;flex-direction:column;gap:12px">
+                <div class="form-field" style="gap:4px">
+                  <label style="font-size:11px;font-weight:600;color:var(--slate-500)">Nama Klinik</label>
+                  <input type="text" value="VetCare Klinik Hewan" style="border:1px solid var(--slate-300);border-radius:6px;padding:8px 12px;font-size:13px;font-family:var(--font-body);outline:none;width:100%">
+                </div>
+                <div class="form-field" style="gap:4px">
+                  <label style="font-size:11px;font-weight:600;color:var(--slate-500)">Alamat</label>
+                  <textarea style="border:1px solid var(--slate-300);border-radius:6px;padding:8px 12px;font-size:13px;font-family:var(--font-body);outline:none;resize:none;height:70px">Jl. Veteriner Raya No. 88, Jakarta Selatan 12345</textarea>
+                </div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+                  <div class="form-field" style="gap:4px">
+                    <label style="font-size:11px;font-weight:600;color:var(--slate-500)">Telepon</label>
+                    <input type="tel" value="+62 812-3456-7890" style="border:1px solid var(--slate-300);border-radius:6px;padding:8px 12px;font-size:13px;font-family:var(--font-body);outline:none;width:100%">
+                  </div>
+                  <div class="form-field" style="gap:4px">
+                    <label style="font-size:11px;font-weight:600;color:var(--slate-500)">Email</label>
+                    <input type="email" value="info@vetcare.id" style="border:1px solid var(--slate-300);border-radius:6px;padding:8px 12px;font-size:13px;font-family:var(--font-body);outline:none;width:100%">
+                  </div>
+                </div>
+                <button class="btn btn-primary btn-sm" style="align-self:flex-start"><i data-lucide="save" style="width:13px;height:13px"></i> Simpan</button>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-header"><h3>Jam Operasional</h3></div>
+              <div class="card-body" style="display:flex;flex-direction:column;gap:10px">
+                <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:var(--slate-50);border-radius:8px">
+                  <strong style="font-size:13px;width:80px">Senin</strong>
+                  <input type="time" value="08:00" style="border:1px solid var(--slate-300);border-radius:6px;padding:5px 8px;font-size:12px;font-family:var(--font-body);outline:none;width:90px">
+                  <span style="font-size:12px;color:var(--slate-400)">—</span>
+                  <input type="time" value="20:00" style="border:1px solid var(--slate-300);border-radius:6px;padding:5px 8px;font-size:12px;font-family:var(--font-body);outline:none;width:90px">
+                </div>
+                <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:var(--slate-50);border-radius:8px">
+                  <strong style="font-size:13px;width:80px">Sabtu</strong>
+                  <input type="time" value="08:00" style="border:1px solid var(--slate-300);border-radius:6px;padding:5px 8px;font-size:12px;font-family:var(--font-body);outline:none;width:90px">
+                  <span style="font-size:12px;color:var(--slate-400)">—</span>
+                  <input type="time" value="17:00" style="border:1px solid var(--slate-300);border-radius:6px;padding:5px 8px;font-size:12px;font-family:var(--font-body);outline:none;width:90px">
+                </div>
+                <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:var(--slate-50);border-radius:8px">
+                  <strong style="font-size:13px;width:80px">Minggu</strong>
+                  <input type="time" value="08:00" style="border:1px solid var(--slate-300);border-radius:6px;padding:5px 8px;font-size:12px;font-family:var(--font-body);outline:none;width:90px">
+                  <span style="font-size:12px;color:var(--slate-400)">—</span>
+                  <input type="time" value="17:00" style="border:1px solid var(--slate-300);border-radius:6px;padding:5px 8px;font-size:12px;font-family:var(--font-body);outline:none;width:90px">
+                </div>
+                <button class="btn btn-primary btn-sm" style="align-self:flex-start;margin-top:4px"><i data-lucide="save" style="width:13px;height:13px"></i> Simpan</button>
+              </div>
+            </div>
+          </div>
+        </div><!-- /adm-pengaturan -->
+
+        <!-- APPOINTMENT ADMIN -->
+        <div id="adm-appointment-admin" style="display:none">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+            <div style="display:flex;gap:8px">
+              <button class="btn btn-primary btn-sm">Semua</button>
+              <button class="btn btn-outline btn-sm">Pending</button>
+              <button class="btn btn-outline btn-sm">Confirmed</button>
+              <button class="btn btn-outline btn-sm">Selesai</button>
+            </div>
+            <button class="btn btn-primary btn-sm"><i data-lucide="plus" style="width:13px;height:13px"></i> Tambah</button>
+          </div>
+          <div class="card">
+            <div class="card-header"><h3>Semua Appointment</h3></div>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Tanggal</th><th>Pelanggan</th><th>Hewan</th><th>Layanan</th><th>Dokter</th><th>Status</th><th>Aksi</th></tr></thead>
+                <tbody>
+                  <tr><td>9 Jun 09.00</td><td>Bagas H.</td><td>Bola (Anjing)</td><td>Pemeriksaan</td><td>drh. Anisa</td><td><span class="badge-status status-active">Sedang Diperiksa</span></td><td><div style="display:flex;gap:4px"><button class="btn btn-outline btn-sm">Edit</button></div></td></tr>
+                  <tr><td>9 Jun 09.45</td><td>Dewi P.</td><td>Luna (Kucing)</td><td>Vaksinasi</td><td>drh. Anisa</td><td><span class="badge-status status-waiting">Menunggu</span></td><td><div style="display:flex;gap:4px"><button class="btn btn-outline btn-sm">Konfirmasi</button><button class="btn btn-danger btn-sm">Batal</button></div></td></tr>
+                  <tr><td>10 Jun 09.00</td><td>Sari R.</td><td>Max (Kucing)</td><td>Vaksinasi</td><td>drh. Budi</td><td><span class="badge-status status-confirmed">Confirmed</span></td><td><div style="display:flex;gap:4px"><button class="btn btn-outline btn-sm">Reschedule</button><button class="btn btn-danger btn-sm">Batal</button></div></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div><!-- /adm-appointment-admin -->
+
+        <!-- NOTIFIKASI ADMIN -->
+        <div id="adm-notifikasi-admin" style="display:none">
+          <div class="card">
+            <div class="card-header"><h3>Template Notifikasi</h3><button class="btn btn-primary btn-sm"><i data-lucide="plus" style="width:13px;height:13px"></i> Buat Template</button></div>
+            <div class="card-body" style="display:flex;flex-direction:column;gap:14px">
+              <div style="padding:16px;background:var(--teal-50);border-radius:var(--radius-md);border:1px solid var(--teal-200)">
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+                  <strong style="font-size:13px;display:flex;align-items:center;gap:8px"><i data-lucide="message-square" style="width:14px;height:14px;color:var(--teal-600)"></i> Reminder Vaksinasi</strong>
+                  <div style="display:flex;gap:6px">
+                    <span style="font-size:11px;background:var(--teal-100);color:var(--teal-700);padding:2px 8px;border-radius:10px;font-weight:600">WhatsApp</span>
+                    <span style="font-size:11px;background:var(--teal-100);color:var(--teal-700);padding:2px 8px;border-radius:10px;font-weight:600">Email</span>
+                  </div>
+                </div>
+                <p style="font-size:12px;color:var(--slate-600)">Halo {nama_pemilik}, ini adalah pengingat bahwa {nama_hewan} Anda memiliki jadwal vaksinasi pada {tanggal}. Hubungi kami jika perlu reschedule.</p>
+                <div style="display:flex;gap:8px;margin-top:10px"><button class="btn btn-outline btn-sm">Edit</button><button class="btn btn-primary btn-sm">Kirim Test</button></div>
+              </div>
+              <div style="padding:16px;background:var(--slate-50);border-radius:var(--radius-md);border:1px solid var(--slate-200)">
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+                  <strong style="font-size:13px;display:flex;align-items:center;gap:8px"><i data-lucide="calendar-check" style="width:14px;height:14px;color:var(--slate-600)"></i> Konfirmasi Appointment</strong>
+                  <span style="font-size:11px;background:var(--slate-200);color:var(--slate-600);padding:2px 8px;border-radius:10px;font-weight:600">Email</span>
+                </div>
+                <p style="font-size:12px;color:var(--slate-600)">Appointment Anda pada {tanggal} pukul {waktu} telah dikonfirmasi. Mohon hadir 10 menit lebih awal.</p>
+                <div style="display:flex;gap:8px;margin-top:10px"><button class="btn btn-outline btn-sm">Edit</button></div>
+              </div>
+            </div>
+          </div>
+        </div><!-- /adm-notifikasi-admin -->
+
+        <!-- REKAM MEDIS ADMIN -->
+        <div id="adm-rekam-admin" style="display:none">
+          <div style="display:flex;gap:8px;margin-bottom:16px;align-items:center">
+            <input type="text" placeholder="Cari pasien atau hewan..." style="border:1px solid var(--slate-300);border-radius:8px;padding:8px 12px;font-size:13px;font-family:var(--font-body);outline:none;width:260px">
+            <input type="date" style="border:1px solid var(--slate-300);border-radius:8px;padding:8px 12px;font-size:13px;font-family:var(--font-body);outline:none;color:var(--slate-700)">
+            <button class="btn btn-outline btn-sm"><i data-lucide="download" style="width:13px;height:13px"></i> Export</button>
+          </div>
+          <div class="card">
+            <div class="card-header"><h3>Seluruh Rekam Medis</h3><span style="font-size:12px;color:var(--slate-400)">View Only</span></div>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Tanggal</th><th>Pemilik</th><th>Hewan</th><th>Dokter</th><th>Diagnosis</th><th>Aksi</th></tr></thead>
+                <tbody>
+                  <tr><td>9 Jun 2025</td><td>Bagas Hendra</td><td>Bola (Anjing)</td><td>drh. Anisa</td><td>Dermatitis allergica</td><td><button class="btn btn-outline btn-sm">Lihat</button></td></tr>
+                  <tr><td>8 Jun 2025</td><td>Dewi Pratiwi</td><td>Luna (Kucing)</td><td>drh. Anisa</td><td>Vaksinasi</td><td><button class="btn btn-outline btn-sm">Lihat</button></td></tr>
+                  <tr><td>7 Jun 2025</td><td>Sari Rahayu</td><td>Max (Kucing)</td><td>drh. Anisa</td><td>Cek lab — normal</td><td><button class="btn btn-outline btn-sm">Lihat</button></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div><!-- /adm-rekam-admin -->
+
+        <!-- JADWAL DOKTER ADMIN -->
+        <div id="adm-jadwal-dokter" style="display:none">
+          <div class="card">
+            <div class="card-header"><h3>Jadwal Semua Dokter</h3><button class="btn btn-primary btn-sm"><i data-lucide="plus" style="width:13px;height:13px"></i> Tambah Jadwal</button></div>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Dokter</th><th>Spesialisasi</th><th>Senin–Jumat</th><th>Sabtu</th><th>Minggu</th><th>Status</th><th>Aksi</th></tr></thead>
+                <tbody>
+                  <tr><td><span class="td-name"><div class="avatar" style="width:28px;height:28px;font-size:11px">AP</div>drh. Anisa Putri</span></td><td>Hewan Kecil</td><td>08.00–14.00</td><td>08.00–12.00</td><td>Libur</td><td><span class="badge-status status-confirmed">Aktif</span></td><td><button class="btn btn-outline btn-sm">Edit</button></td></tr>
+                  <tr><td><span class="td-name"><div class="avatar" style="width:28px;height:28px;font-size:11px;background:#047070">BS</div>drh. Budi Santoso</span></td><td>Bedah</td><td>14.00–20.00</td><td>Libur</td><td>Libur</td><td><span class="badge-status status-confirmed">Aktif</span></td><td><button class="btn btn-outline btn-sm">Edit</button></td></tr>
+                  <tr><td><span class="td-name"><div class="avatar" style="width:28px;height:28px;font-size:11px;background:var(--rose-500)">RK</div>drh. Rina Kurniawan</span></td><td>Dermatologi</td><td>08.00–14.00</td><td>08.00–12.00</td><td>Libur</td><td><span class="badge-status status-pending">Cuti</span></td><td><button class="btn btn-outline btn-sm">Edit</button></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div><!-- /adm-jadwal-dokter -->
+
+      </div><!-- /dash-content -->
+    </div><!-- /dash-main -->
+  </div><!-- /dash-layout -->
+</div><!-- /view-admin -->
+
+
+<!-- ============================================================
+     JAVASCRIPT
+     ============================================================ -->
+<script>
+// ── Init Lucide icons ─────────────────────────────────────────
+function initIcons() {
+  if (window.lucide) lucide.createIcons();
+}
+document.addEventListener('DOMContentLoaded', initIcons);
+
+// ── Helpers ───────────────────────────────────────────────────
+function setActiveNav(viewId, pageKey) {
+  document.querySelectorAll('#' + viewId + ' .nav-item').forEach(el => {
+    const fn = (el.getAttribute('onclick') || '');
+    el.classList.toggle('active', fn.includes("'" + pageKey + "'"));
+  });
+}
+
+// ── View Switcher ─────────────────────────────────────────────
+function switchView(v) {
+  document.querySelectorAll('.view').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.vs-btn').forEach(el => el.classList.remove('active'));
+  const viewEl = document.getElementById('view-' + v);
+  if (viewEl) viewEl.classList.add('active');
+  const idx = {landing:0, customer:1, doctor:2, admin:3}[v];
+  const btns = document.querySelectorAll('.vs-btn');
+  if (btns[idx]) btns[idx].classList.add('active');
+  window.scrollTo(0, 0);
+  initIcons();
+}
+
+// ── Customer Sub-pages ────────────────────────────────────────
+const CUST_PAGES = ['beranda','hewan','monitoring','appointment','riwayat','chat','invoice','profil'];
+const CUST_TITLES = {
+  beranda:'Beranda', hewan:'Hewan Saya', monitoring:'Monitoring Hewan',
+  appointment:'Appointment', riwayat:'Riwayat Kunjungan',
+  chat:'Konsultasi / Chat', invoice:'Invoice & Pembayaran', profil:'Profil & Pengaturan'
+};
+
+function showCustomerPage(p) {
+  CUST_PAGES.forEach(pg => {
+    const el = document.getElementById('cust-' + pg);
+    if (el) el.style.display = (pg === p) ? '' : 'none';
+  });
+  const titleEl = document.getElementById('cust-page-title');
+  if (titleEl) titleEl.textContent = CUST_TITLES[p] || p;
+  setActiveNav('view-customer', p);
+  initIcons();
+}
+
+// ── Doctor Sub-pages ──────────────────────────────────────────
+const DOC_PAGES = ['beranda','antrian','rekam','jadwal','chat-dokter','riwayat-pasien','laporan'];
+const DOC_TITLES = {
+  beranda:'Beranda', antrian:'Antrian Hari Ini', rekam:'Input Rekam Medis',
+  jadwal:'Jadwal Saya', 'chat-dokter':'Chat Konsultasi',
+  'riwayat-pasien':'Riwayat Pasien', laporan:'Laporan Harian'
+};
+
+function showDoctorPage(p) {
+  DOC_PAGES.forEach(pg => {
+    const el = document.getElementById('doc-' + pg);
+    if (el) el.style.display = (pg === p) ? '' : 'none';
+  });
+  const titleEl = document.getElementById('doc-page-title');
+  if (titleEl) titleEl.textContent = DOC_TITLES[p] || p;
+  setActiveNav('view-doctor', p);
+  initIcons();
+}
+
+// ── Admin Sub-pages ───────────────────────────────────────────
+const ADM_PAGES = [
+  'beranda','user','appointment-admin','jadwal-dokter',
+  'inventory','keuangan','rekam-admin','pengaturan','notifikasi-admin'
+];
+const ADM_TITLES = {
+  beranda:'Beranda', user:'Manajemen User',
+  'appointment-admin':'Manajemen Appointment', 'jadwal-dokter':'Jadwal Dokter',
+  inventory:'Inventory & Obat', keuangan:'Laporan Keuangan',
+  'rekam-admin':'Rekam Medis', pengaturan:'Pengaturan Klinik',
+  'notifikasi-admin':'Template Notifikasi'
+};
+
+function showAdminPage(p) {
+  ADM_PAGES.forEach(pg => {
+    const el = document.getElementById('adm-' + pg);
+    if (el) el.style.display = (pg === p) ? '' : 'none';
+  });
+  const titleEl = document.getElementById('adm-page-title');
+  if (titleEl) titleEl.textContent = ADM_TITLES[p] || p;
+  setActiveNav('view-admin', p);
+  initIcons();
+}
+</script>
+</body>
+</html>
