@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Dashboard Pelanggan — VetCare</title>
+  <link rel="stylesheet" href="styles/style.css">
+  <script src="https://unpkg.com/lucide@0.383.0/dist/umd/lucide.js"></script>
+</head>
+<body>
+  <div class="dash-layout">
+    <aside class="sidebar">
+      <div class="sidebar-logo"><div class="logo-mark"><div class="logo-icon"><i data-lucide="heart-pulse" style="width:18px;height:18px;color:white"></i></div><div class="logo-text"><strong>VetCare</strong><span>Portal Pelanggan</span></div></div></div>
+      <div class="sidebar-user"><div class="avatar" id="userAvatar">SR</div><div class="user-info"><strong id="userName">Pelanggan</strong><span>Pemilik Hewan</span></div></div>
+      <nav class="sidebar-nav">
+        <div class="nav-section-label">Utama</div>
+        <div class="nav-item active" onclick="showCustomerPage('beranda')">Beranda</div>
+        <div class="nav-item" onclick="showCustomerPage('hewan')">Hewan Saya</div>
+        <div class="nav-item" onclick="showCustomerPage('monitoring')">Monitoring Hewan</div>
+        <div class="nav-item" onclick="showCustomerPage('appointment')">Appointment<span class="badge">2</span></div>
+        <div class="nav-section-label">Riwayat</div>
+        <div class="nav-item" onclick="showCustomerPage('riwayat')">Riwayat Kunjungan</div>
+        <div class="nav-item" onclick="showCustomerPage('chat')">Konsultasi / Chat<span class="badge">1</span></div>
+        <div class="nav-item" onclick="showCustomerPage('invoice')">Invoice & Pembayaran</div>
+        <div class="nav-section-label">Akun</div>
+        <div class="nav-item" onclick="showCustomerPage('profil')">Profil & Pengaturan</div>
+      </nav>
+      <div class="sidebar-footer"><div class="nav-item" onclick="logout()"><i data-lucide="log-out" style="width:16px;height:16px"></i> Keluar</div></div>
+    </aside>
+
+    <div class="dash-main">
+      <div class="dash-topbar"><div class="dash-topbar-left"><h1 id="pageTitle">Beranda</h1><p id="pageSub">Selamat datang</p></div><div class="dash-topbar-right"><button class="icon-btn"><i data-lucide="search" style="width:16px;height:16px"></i></button><div class="avatar" id="topAvatar">SR</div></div></div>
+  <script src="scripts/app.js"></script>
+      <div class="dash-content">
+
+        <!-- BERANDA PAGE -->
+        <div id="cust-beranda">
+          <!-- Stats (reuse) -->
+          <div class="stats-grid">
+            <div class="stat-card"><div class="stat-icon teal"><i data-lucide="paw-print" style="width:22px;height:22px"></i></div><div class="stat-info"><div class="label">Hewan Terdaftar</div><div class="value">3</div></div></div>
+            <div class="stat-card"><div class="stat-icon amber"><i data-lucide="calendar" style="width:22px;height:22px"></i></div><div class="stat-info"><div class="label">Appointment Mendatang</div><div class="value">2</div></div></div>
+            <div class="stat-card"><div class="stat-icon green"><i data-lucide="check-circle" style="width:22px;height:22px"></i></div><div class="stat-info"><div class="label">Total Kunjungan</div><div class="value">18</div></div></div>
+            <div class="stat-card"><div class="stat-icon rose"><i data-lucide="bell" style="width:22px;height:22px"></i></div><div class="stat-info"><div class="label">Notifikasi Baru</div><div class="value">3</div></div></div>
+          </div>
+
+          <div class="grid-2">
+            <div class="card">
+              <div class="card-header"><h3>Hewan Saya</h3><button class="btn-ghost btn" onclick="showCustomerPage('hewan')"><i data-lucide="plus" style="width:14px;height:14px"></i> Tambah</button></div>
+              <div class="card-body">
+                <div style="display:flex;flex-direction:column;gap:8px">
+                  <div style="display:flex;align-items:center;gap:12px;padding:12px;background:var(--teal-50);border-radius:var(--radius-md);border:1px solid var(--teal-100)"><div style="width:40px;height:40px;background:var(--teal-600);border-radius:50%;display:flex;align-items:center;justify-content:center;color:white"><i data-lucide="paw-print" style="width:18px;height:18px"></i></div><div style="flex:1"><strong>Max</strong><br><span style="font-size:12px;color:var(--slate-500)">Kucing Persia — 3 tahun</span></div><span class="badge-status status-confirmed">Sehat</span></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-header"><h3>Appointment Mendatang</h3><button class="btn-ghost btn" onclick="showCustomerPage('appointment')">Lihat Semua</button></div>
+              <div class="card-body">
+                <div style="display:flex;flex-direction:column;gap:8px">
+                  <div style="padding:14px;border-radius:var(--radius-md);background:var(--teal-50);border-left:3px solid var(--teal-500)"><strong>Vaksinasi Rabies — Max</strong><div style="font-size:12px;color:var(--slate-500)">10 Juni 2025 — 09.00 — drh. Anisa</div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Notifikasi -->
+          <div class="card" style="margin-top:20px">
+            <div class="card-header"><h3>Notifikasi</h3><span style="font-size:12px;color:var(--teal-600);font-weight:600;cursor:pointer">Tandai semua dibaca</span></div>
+            <div>
+              <div style="display:flex;align-items:center;gap:14px;padding:14px 20px;border-bottom:1px solid var(--slate-100);background:var(--teal-50)">
+                <div style="width:36px;height:36px;background:var(--teal-100);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--teal-700);flex-shrink:0"><i data-lucide="syringe" style="width:16px;height:16px"></i></div>
+                <div style="flex:1"><strong style="font-size:13px">Reminder Vaksin</strong><br><span style="font-size:12px;color:var(--slate-500)">Jadwal vaksinasi Max sudah dekat — 10 Juni 2025</span></div>
+                <span style="font-size:11px;color:var(--slate-400)">2 jam lalu</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:14px;padding:14px 20px;border-bottom:1px solid var(--slate-100)">
+                <div style="width:36px;height:36px;background:var(--green-100);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--green-500);flex-shrink:0"><i data-lucide="check-circle" style="width:16px;height:16px"></i></div>
+                <div style="flex:1"><strong style="font-size:13px">Appointment Dikonfirmasi</strong><br><span style="font-size:12px;color:var(--slate-500)">Jadwal 10 Juni telah dikonfirmasi oleh klinik</span></div>
+                <span style="font-size:11px;color:var(--slate-400)">5 jam lalu</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:14px;padding:14px 20px">
+                <div style="width:36px;height:36px;background:var(--amber-100);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--amber-500);flex-shrink:0"><i data-lucide="message-square" style="width:16px;height:16px"></i></div>
+                <div style="flex:1"><strong style="font-size:13px">Pesan Baru dari drh. Anisa</strong><br><span style="font-size:12px;color:var(--slate-500)">Hasil lab Max sudah tersedia. Silakan cek di chat.</span></div>
+                <span style="font-size:11px;color:var(--slate-400)">1 hari lalu</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- MONITORING PAGE -->
+        <div id="cust-monitoring" style="display:none">
+          <div class="grid-2" style="margin-bottom:20px">
+            <div class="card"><div class="card-header"><h3>Pilih Hewan</h3></div><div class="card-body"><button class="btn btn-primary btn-sm">Max (Kucing)</button></div></div>
+            <div class="card"><div class="card-header"><h3>Input Data Hari Ini — Max</h3></div><div class="card-body"><div style="display:grid;grid-template-columns:1fr 1fr;gap:10px"><div class="form-field"><label>Berat (kg)</label><input type="number" value="4.2"></div><div class="form-field"><label>Suhu (°C)</label><input type="number" value="38.5"></div></div><button class="btn btn-primary btn-sm">Simpan Data</button></div></div>
+          </div>
+          <div class="grid-2">
+            <div class="card"><div class="card-header"><h3>Tren Berat Badan — Max (7 Hari)</h3></div><div class="card-body"><div class="monitoring-chart"><div class="chart-bars"><div class="chart-bar" style="height:55%"></div><div class="chart-bar" style="height:60%"></div><div class="chart-bar" style="height:58%"></div><div class="chart-bar" style="height:63%"></div><div class="chart-bar" style="height:62%"></div><div class="chart-bar" style="height:65%"></div><div class="chart-bar" style="height:70%"></div></div></div></div></div>
+          </div>
+
+        <!-- APPOINTMENT PAGE -->
+        <div id="cust-appointment" style="display:none">
+          <div style="display:flex;justify-content:flex-end;margin-bottom:16px"><button class="btn btn-primary">Buat Appointment Baru</button></div>
+          <div class="card"><div class="card-header"><h3>Semua Appointment</h3></div>
+            <div class="table-wrap"><table><thead><tr><th>Tanggal & Waktu</th><th>Hewan</th><th>Layanan</th><th>Dokter</th><th>Status</th><th>Aksi</th></tr></thead>
+              <tbody>
+                <tr><td>10 Jun 2025, 09.00</td><td><span class="td-name">Max</span></td><td>Vaksinasi Rabies</td><td>drh. Anisa Putri</td><td><span class="badge-status status-confirmed">Confirmed</span></td><td><button class="btn btn-outline btn-sm">Detail</button></td></tr>
+                <tr><td>15 Jun 2025, 14.00</td><td><span class="td-name">Bola</span></td><td>Pemeriksaan Umum</td><td>drh. Budi Santoso</td><td><span class="badge-status status-pending">Pending</span></td><td><button class="btn btn-outline btn-sm">Detail</button></td></tr>
+                <tr><td>28 Mei 2025, 10.00</td><td><span class="td-name">Putih</span></td><td>Pemeriksaan Umum</td><td>drh. Rina Kurniawan</td><td><span class="badge-status status-done">Selesai</span></td><td><button class="btn btn-outline btn-sm">Rekam Medis</button></td></tr>
+                <tr><td>12 Mei 2025, 11.00</td><td><span class="td-name">Max</span></td><td>Grooming</td><td>Staff Grooming</td><td><span class="badge-status status-done">Selesai</span></td><td><button class="btn btn-outline btn-sm">Detail</button></td></tr>
+              </tbody>
+            </table></div></div>
+        </div>
+
+        <!-- CHAT PAGE -->
+        <div id="cust-chat" style="display:none">
+          <div class="chat-layout">
+            <div class="chat-list">
+              <div style="padding:12px 14px;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--slate-400);border-bottom:1px solid var(--slate-200)">Percakapan</div>
+              <div class="chat-item active">
+                <div class="avatar" style="background:var(--teal-700);font-size:12px">AP</div>
+                <div class="ci-info"><strong>drh. Anisa Putri</strong><span>Hasil lab sudah ada...</span></div>
+              </div>
+              <div class="chat-item">
+                <div class="avatar" style="background:var(--slate-600);font-size:12px">BS</div>
+                <div class="ci-info"><strong>drh. Budi Santoso</strong><span>Terima kasih bu Sari</span></div>
+              </div>
+            </div>
+            <div class="chat-main">
+              <div class="chat-topbar">
+                <div class="avatar" style="background:var(--teal-700);font-size:12px;width:32px;height:32px">AP</div>
+                <div>
+                  <strong style="font-size:13px;font-weight:600">drh. Anisa Putri</strong>
+                  <div style="display:flex;align-items:center;gap:4px"><div class="online-dot"></div><span style="font-size:11px;color:var(--slate-400)">Online</span></div>
+                </div>
+                <div style="margin-left:auto;display:flex;gap:8px">
+                  <button class="icon-btn"><i data-lucide="phone" style="width:15px;height:15px"></i></button>
+                  <button class="icon-btn"><i data-lucide="more-vertical" style="width:15px;height:15px"></i></button>
+                </div>
+              </div>
+              <div class="chat-messages">
+                <div class="msg msg-in">Selamat pagi Bu Sari. Hasil lab Max sudah keluar. Semuanya normal.<div class="msg-time">09.15</div></div>
+                <div class="msg msg-out">Alhamdulillah, terima kasih dok! Apa ada yang perlu diperhatikan?<div class="msg-time">09.22</div></div>
+                <div class="msg msg-in">Tidak ada yang mengkhawatirkan. Lanjutkan pola makan sekarang dan pastikan minum air yang cukup ya.<div class="msg-time">09.24</div></div>
+                <div class="msg msg-out">Baik dok, siap. Untuk jadwal vaksin tanggal 10, apakah Max perlu puasa dulu?<div class="msg-time">09.28</div></div>
+                <div class="msg msg-in">Tidak perlu puasa untuk vaksinasi. Datang seperti biasa saja. Kalau ada pertanyaan lain jangan segan tanya ya Bu.<div class="msg-time">09.30</div></div>
+              </div>
+              <div class="chat-input-bar">
+                <button class="icon-btn"><i data-lucide="paperclip" style="width:15px;height:15px"></i></button>
+                <input type="text" class="chat-input" placeholder="Ketik pesan..." />
+                <button class="btn btn-primary btn-sm" style="border-radius:8px">
+                  <i data-lucide="send" style="width:14px;height:14px"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIWAYAT PAGE -->
+        <div id="cust-riwayat" style="display:none">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
+            <input type="text" placeholder="Cari riwayat kunjungan..." style="border:1px solid var(--slate-300);border-radius:8px;padding:8px 12px;font-size:13px;width:240px">
+            <select style="border:1px solid var(--slate-300);border-radius:8px;padding:8px 12px;font-size:13px;color:var(--slate-700)">
+              <option>Semua Hewan</option><option>Max</option><option>Bola</option><option>Putih</option>
+            </select>
+          </div>
+          <div class="card"><div class="card-header"><h3>Rekam Medis & Riwayat Kunjungan</h3></div>
+            <div class="table-wrap"><table><thead><tr><th>Tanggal</th><th>Hewan</th><th>Diagnosis</th><th>Dokter</th><th>Tindakan</th><th>Download</th></tr></thead>
+              <tbody>
+                <tr><td>28 Mei 2025</td><td>Putih</td><td>Pemeriksaan rutin — normal</td><td>drh. Rina</td><td>Pemeriksaan fisik</td><td><button class="btn btn-outline btn-sm"><i data-lucide="download" style="width:12px;height:12px"></i> PDF</button></td></tr>
+                <tr><td>12 Mei 2025</td><td>Max</td><td>Grooming & perawatan kuku</td><td>Staff</td><td>Grooming lengkap</td><td><button class="btn btn-outline btn-sm"><i data-lucide="download" style="width:12px;height:12px"></i> PDF</button></td></tr>
+                <tr><td>3 Apr 2025</td><td>Bola</td><td>Dermatitis ringan</td><td>drh. Budi</td><td>Salep + antibiotik</td><td><button class="btn btn-outline btn-sm"><i data-lucide="download" style="width:12px;height:12px"></i> PDF</button></td></tr>
+              </tbody>
+            </table></div></div>
+        </div>
+
+        <!-- INVOICE PAGE -->
+        <div id="cust-invoice" style="display:none">
+          <div class="card"><div class="card-header"><h3>Invoice & Riwayat Pembayaran</h3></div>
+            <div class="table-wrap"><table><thead><tr><th>No. Invoice</th><th>Tanggal</th><th>Layanan</th><th>Total</th><th>Status</th><th>Aksi</th></tr></thead>
+              <tbody>
+                <tr><td style="font-weight:600;color:var(--teal-700)">#INV-2025-0312</td><td>28 Mei 2025</td><td>Pemeriksaan Umum — Putih</td><td style="font-weight:700">Rp 150.000</td><td><span class="badge-status status-done">Lunas</span></td><td><button class="btn btn-outline btn-sm"><i data-lucide="download" style="width:12px;height:12px"></i></button></td></tr>
+                <tr><td style="font-weight:600;color:var(--teal-700)">#INV-2025-0298</td><td>12 Mei 2025</td><td>Grooming — Max</td><td style="font-weight:700">Rp 200.000</td><td><span class="badge-status status-done">Lunas</span></td><td><button class="btn btn-outline btn-sm"><i data-lucide="download" style="width:12px;height:12px"></i></button></td></tr>
+                <tr><td style="font-weight:600;color:var(--amber-500)">#INV-2025-0345</td><td>10 Jun 2025</td><td>Vaksinasi — Max</td><td style="font-weight:700">Rp 350.000</td><td><span class="badge-status status-pending">Belum Bayar</span></td><td><button class="btn btn-primary btn-sm">Bayar</button></td></tr>
+              </tbody>
+            </table></div></div>
+        </div>
+
+        <!-- HEWAN PAGE -->
+        <div id="cust-hewan" style="display:none">
+          <div style="display:flex;justify-content:flex-end;margin-bottom:16px"><button class="btn btn-primary">Tambah Hewan</button></div>
+          <div class="grid-3">
+            <div class="card">
+              <div style="height:120px;background:linear-gradient(135deg,var(--teal-600),var(--teal-900));display:flex;align-items:center;justify-content:center"><i data-lucide="paw-print" style="width:48px;height:48px;color:rgba(255,255,255,.3)"></i></div>
+              <div class="card-body">
+                <h4 style="font-family:var(--font-head);font-size:16px;font-weight:700;margin-bottom:4px">Max</h4>
+                <p style="font-size:12px;color:var(--slate-500);margin-bottom:12px">Kucing Persia • Jantan • 3 tahun</p>
+                <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px">
+                  <span style="font-size:11px;background:var(--teal-100);color:var(--teal-700);padding:2px 8px;border-radius:10px;font-weight:600">Berat: 4.2 kg</span>
+                  <span style="font-size:11px;background:var(--green-100);color:var(--green-500);padding:2px 8px;border-radius:10px;font-weight:600">Vaksin: Up to date</span>
+                </div>
+                <div style="display:flex;gap:8px">
+                  <button class="btn btn-outline btn-sm" style="flex:1">Edit</button>
+                  <button class="btn btn-primary btn-sm" style="flex:1">Detail</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div style="height:120px;background:linear-gradient(135deg,var(--amber-500),#92400E);display:flex;align-items:center;justify-content:center"><i data-lucide="paw-print" style="width:48px;height:48px;color:rgba(255,255,255,.3)"></i></div>
+              <div class="card-body">
+                <h4 style="font-family:var(--font-head);font-size:16px;font-weight:700;margin-bottom:4px">Bola</h4>
+                <p style="font-size:12px;color:var(--slate-500);margin-bottom:12px">Golden Retriever • Jantan • 5 tahun</p>
+                <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px">
+                  <span style="font-size:11px;background:var(--amber-100);color:#B45309;padding:2px 8px;border-radius:10px;font-weight:600">Berat: 28 kg</span>
+                  <span style="font-size:11px;background:var(--amber-100);color:#B45309;padding:2px 8px;border-radius:10px;font-weight:600">Kontrol diperlukan</span>
+                </div>
+                <div style="display:flex;gap:8px">
+                  <button class="btn btn-outline btn-sm" style="flex:1">Edit</button>
+                  <button class="btn btn-primary btn-sm" style="flex:1">Detail</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div style="height:120px;background:linear-gradient(135deg,var(--rose-500),#9F1239);display:flex;align-items:center;justify-content:center"><i data-lucide="paw-print" style="width:48px;height:48px;color:rgba(255,255,255,.3)"></i></div>
+              <div class="card-body">
+                <h4 style="font-family:var(--font-head);font-size:16px;font-weight:700;margin-bottom:4px">Putih</h4>
+                <p style="font-size:12px;color:var(--slate-500);margin-bottom:12px">Kelinci Anggora • Betina • 1 tahun</p>
+                <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px">
+                  <span style="font-size:11px;background:var(--teal-100);color:var(--teal-700);padding:2px 8px;border-radius:10px;font-weight:600">Berat: 2.1 kg</span>
+                  <span style="font-size:11px;background:var(--green-100);color:var(--green-500);padding:2px 8px;border-radius:10px;font-weight:600">Sehat</span>
+                </div>
+                <div style="display:flex;gap:8px">
+                  <button class="btn btn-outline btn-sm" style="flex:1">Edit</button>
+                  <button class="btn btn-primary btn-sm" style="flex:1">Detail</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PROFIL PAGE -->
+        <div id="cust-profil" style="display:none">
+          <div class="grid-2">
+            <div class="card">
+              <div class="card-header"><h3>Data Diri</h3></div>
+              <div class="card-body" style="display:flex;flex-direction:column;gap:14px">
+                <div style="display:flex;align-items:center;gap:16px;margin-bottom:8px">
+                  <div style="width:64px;height:64px;background:var(--teal-600);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--font-head);font-size:22px;font-weight:700;color:white">SR</div>
+                  <div>
+                    <strong style="font-size:16px">Sari Rahayu</strong>
+                    <p style="font-size:13px;color:var(--slate-500)">sari@email.com</p>
+                  </div>
+                </div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+                  <div class="form-field" style="gap:4px"><label>Nama Lengkap</label><input type="text" value="Sari Rahayu"></div>
+                  <div class="form-field" style="gap:4px"><label>Nomor Telepon</label><input type="tel" value="+62 812 3456 7890"></div>
+                </div>
+                <button class="btn btn-primary btn-sm" style="align-self:flex-start">Simpan Perubahan</button>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-header"><h3>Preferensi Notifikasi</h3></div>
+              <div class="card-body" style="display:flex;flex-direction:column;gap:14px">
+                <div style="display:flex;align-items:center;justify-content:space-between;padding:12px;background:var(--slate-50);border-radius:var(--radius-md)"><div><strong>Reminder Vaksinasi</strong><br><span style="font-size:12px;color:var(--slate-400)">Email & WhatsApp</span></div><div style="width:40px;height:22px;background:var(--teal-500);border-radius:20px;position:relative"><div style="position:absolute;right:2px;top:2px;width:18px;height:18px;background:white;border-radius:50%"></div></div></div>
+                <div style="display:flex;align-items:center;justify-content:space-between;padding:12px;background:var(--slate-50);border-radius:var(--radius-md)"><div><strong>Konfirmasi Appointment</strong><br><span style="font-size:12px;color:var(--slate-400)">Email</span></div><div style="width:40px;height:22px;background:var(--teal-500);border-radius:20px;position:relative"><div style="position:absolute;right:2px;top:2px;width:18px;height:18px;background:white;border-radius:50%"></div></div></div>
+                <div style="display:flex;align-items:center;justify-content:space-between;padding:12px;background:var(--slate-50);border-radius:var(--radius-md)"><div><strong>Hasil Laboratorium</strong><br><span style="font-size:12px;color:var(--slate-400)">Push notification</span></div><div style="width:40px;height:22px;background:var(--slate-300);border-radius:20px;position:relative"><div style="position:absolute;left:2px;top:2px;width:18px;height:18px;background:white;border-radius:50%"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /dash-content -->
+  <script>
+    const u = ensureAuth(['customer']);
+    if (u) {
+      document.getElementById('userName').textContent = u.name || u.email;
+      document.getElementById('pageSub').textContent = 'Selamat datang, ' + (u.name || u.email);
+      const initials = (u.name || 'User').split(' ').map(s=>s[0]).slice(0,2).join('');
+      document.getElementById('userAvatar').textContent = initials;
+      document.getElementById('topAvatar').textContent = initials;
+    }
+    showCustomerPage('beranda');
+    if(window.lucide)lucide.createIcons();
+  </script>
+  </div>
+</body>
+</html>

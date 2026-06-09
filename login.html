@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Login — VetCare</title>
+  <link rel="stylesheet" href="styles/style.css">
+  <script src="https://unpkg.com/lucide@0.383.0/dist/umd/lucide.js"></script>
+</head>
+<body style="display:flex;align-items:center;justify-content:center;min-height:100vh;background:var(--slate-50)">
+  <div style="max-width:420px;width:100%;padding:28px">
+    <div style="text-align:center;margin-bottom:18px">
+      <div class="lp-logo"><div class="logo-pill">Vet</div>Care</div>
+      <p style="color:var(--slate-600)">Masuk untuk mengakses dashboard Anda</p>
+    </div>
+    <form id="loginForm" style="background:var(--white);padding:20px;border-radius:12px;box-shadow:var(--shadow-sm)" onsubmit="handleLogin(event)">
+      <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:12px">
+        <label style="font-size:13px;font-weight:700">Email</label>
+        <input id="email" type="email" required placeholder="email@contoh.com" style="padding:10px;border:1px solid var(--slate-300);border-radius:8px">
+        <label style="font-size:13px;font-weight:700">Password</label>
+        <input id="password" type="password" required placeholder="password" style="padding:10px;border:1px solid var(--slate-300);border-radius:8px">
+      </div>
+      <div style="display:flex;gap:10px;align-items:center">
+        <button class="btn btn-primary" type="submit">Masuk</button>
+        <a href="index.html" class="btn btn-ghost">Kembali ke Beranda</a>
+      </div>
+      <p id="loginError" style="color:var(--rose-500);margin-top:10px;display:none">Email atau password salah.</p>
+    </form>
+  </div>
+  <script src="scripts/app.js"></script>
+  <script>if(window.lucide)lucide.createIcons()</script>
+</body>
+</html>

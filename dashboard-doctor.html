@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Dashboard Dokter — VetCare</title>
+  <link rel="stylesheet" href="styles/style.css">
+  <script src="https://unpkg.com/lucide@0.383.0/dist/umd/lucide.js"></script>
+</head>
+<body>
+  <div class="dash-layout">
+    <aside class="sidebar">
+      <div class="sidebar-logo"><div class="logo-mark"><div class="logo-icon"><i data-lucide="stethoscope" style="width:18px;height:18px;color:white"></i></div><div class="logo-text"><strong>VetCare</strong><span>Portal Dokter</span></div></div></div>
+      <div class="sidebar-user"><div class="avatar" id="userAvatar">AP</div><div class="user-info"><strong id="userName">Dokter</strong><span>Dokter Hewan</span></div></div>
+      <nav class="sidebar-nav">
+        <div class="nav-section-label">Utama</div>
+        <div class="nav-item active" onclick="showDoctorPage('beranda')">Beranda</div>
+        <div class="nav-item" onclick="showDoctorPage('antrian')">Antrian Hari Ini<span class="badge">5</span></div>
+        <div class="nav-item" onclick="showDoctorPage('rekam')">Rekam Medis</div>
+        <div class="nav-item" onclick="showDoctorPage('jadwal')">Jadwal Saya</div>
+        <div class="nav-item" onclick="showDoctorPage('chat-dokter')">Chat Konsultasi<span class="badge">2</span></div>
+        <div class="nav-section-label">Data</div>
+        <div class="nav-item" onclick="showDoctorPage('riwayat-pasien')">Riwayat Pasien</div>
+        <div class="nav-item" onclick="showDoctorPage('laporan')">Laporan Harian</div>
+      </nav>
+      <div class="sidebar-footer"><div class="nav-item" onclick="logout()"><i data-lucide="log-out" style="width:16px;height:16px"></i> Keluar</div></div>
+    </aside>
+
+    <div class="dash-main">
+      <div class="dash-topbar"><div class="dash-topbar-left"><h1 id="pageTitle">Beranda</h1><p id="pageSub">Senin, —</p></div><div class="dash-topbar-right"><button class="icon-btn"><i data-lucide="bell" style="width:16px;height:16px"></i></button><div class="avatar" id="topAvatar">AP</div></div></div>
+      <div class="dash-content">
+        <div id="doc-beranda">
+          <div class="stats-grid">
+            <div class="stat-card"><div class="stat-icon teal"><i data-lucide="users" style="width:22px;height:22px"></i></div><div class="stat-info"><div class="label">Pasien Hari Ini</div><div class="value">12</div></div></div>
+            <div class="stat-card"><div class="stat-icon amber"><i data-lucide="clock" style="width:22px;height:22px"></i></div><div class="stat-info"><div class="label">Antrian Menunggu</div><div class="value">5</div></div></div>
+            <div class="stat-card"><div class="stat-icon green"><i data-lucide="check-circle" style="width:22px;height:22px"></i></div><div class="stat-info"><div class="label">Selesai Ditangani</div><div class="value">7</div></div></div>
+          </div>
+
+          <div class="card" style="margin-top:12px"><div class="card-header"><h3>Antrian Hari Ini</h3></div><div class="card-body">Daftar antrian singkat (demo).</div></div>
+        </div>
+
+        <div id="doc-antrian" style="display:none">
+          <div class="card">
+            <div class="card-header"><h3>Antrian Hari Ini</h3><div style="margin-left:auto"><button class="btn btn-primary btn-sm">Panggil Selanjutnya</button></div></div>
+            <div class="card-body">
+              <div class="queue-list">
+                <div class="queue-item"><div class="queue-num current">1</div><div class="qi-info"><strong>Bola (Golden Retriever)</strong><span>Pemilik: Bagas H. — Pemeriksaan Umum</span></div><div class="qi-right"><span class="badge-status status-active">Sedang Diperiksa</span><div class="qi-time">09.15</div></div></div>
+                <div class="queue-item"><div class="queue-num">2</div><div class="qi-info"><strong>Luna (Kucing Maine Coon)</strong><span>Pemilik: Dewi P. — Vaksinasi</span></div><div class="qi-right"><span class="badge-status status-waiting">Menunggu</span><div class="qi-time">09.45</div></div></div>
+                <div class="queue-item"><div class="queue-num">3</div><div class="qi-info"><strong>Rex (Rottweiler)</strong><span>Pemilik: Ahmad S. — Dermatitis</span></div><div class="qi-right"><span class="badge-status status-waiting">Menunggu</span><div class="qi-time">10.00</div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="doc-rekam" style="display:none">
+          <div class="card"><div class="card-header"><h3>Input Rekam Medis</h3></div>
+            <div class="card-body">
+              <form>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">
+                  <div class="form-field"><label>Nama Hewan</label><input type="text" value=""></div>
+                  <div class="form-field"><label>Pemilik</label><input type="text" value=""></div>
+                </div>
+                <div class="form-field"><label>Diagnosis</label><textarea rows="3"></textarea></div>
+                <div style="display:flex;gap:8px;margin-top:10px"><button class="btn btn-primary">Simpan</button><button type="button" class="btn btn-outline">Batal</button></div>
+              </form>
+            </div></div>
+        </div>
+
+        <div id="doc-jadwal" style="display:none"><div class="card"><div class="card-header"><h3>Jadwal Saya</h3></div><div class="card-body">Daftar jadwal dan shift (demo)</div></div></div>
+
+        <div id="doc-chat-dokter" style="display:none">
+          <div class="chat-layout">
+            <div class="chat-list"><div style="padding:12px;font-size:11px;color:var(--slate-400);border-bottom:1px solid var(--slate-200)">Percakapan</div>
+              <div class="chat-item active"><div class="avatar">SR</div><div class="ci-info"><strong>Sari Rahayu</strong><span>Apakah Max perlu puasa sebelum vaksin?</span></div></div>
+              <div class="chat-item"><div class="avatar">BH</div><div class="ci-info"><strong>Bagas H.</strong><span>Bola menggigil setelah perawatan</span></div></div>
+            </div>
+            <div class="chat-main"><div class="chat-topbar"><div class="avatar">SR</div><div><strong>Sari Rahayu</strong><div style="font-size:12px;color:var(--slate-400)">Terakhir: 09.30</div></div></div>
+              <div class="chat-messages"><div class="msg msg-in">Selamat pagi Dok, hasil lab normal.<div class="msg-time">09.15</div></div><div class="msg msg-out">Baik, lanjutkan pola makan.</div></div>
+              <div class="chat-input-bar"><input class="chat-input" placeholder="Ketik pesan..." /><button class="btn btn-primary btn-sm">Kirim</button></div>
+            </div>
+          </div>
+        </div>
+
+        <div id="doc-riwayat-pasien" style="display:none"><div class="card"><div class="card-header"><h3>Riwayat Pasien</h3></div><div class="card-body"><div class="table-wrap"><table><thead><tr><th>Tanggal</th><th>Hewan</th><th>Diagnosis</th><th>Dokter</th><th>Tindakan</th></tr></thead><tbody><tr><td>28 Mei 2025</td><td>Putih</td><td>Normal</td><td>drh. Rina</td><td>Pemeriksaan</td></tr><tr><td>12 Mei 2025</td><td>Max</td><td>Grooming</td><td>Staff</td><td>Perawatan</td></tr></tbody></table></div></div></div>
+
+        <div id="doc-laporan" style="display:none"><div class="card"><div class="card-header"><h3>Laporan Harian</h3></div><div class="card-body">Ringkasan laporan harian (demo)</div></div></div>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="scripts/app.js"></script>
+  <script>
+    const u = ensureAuth(['doctor']);
+    if (u) {
+      document.getElementById('userName').textContent = u.name || u.email;
+      document.getElementById('pageSub').textContent = 'Selamat datang, ' + (u.name || u.email);
+      document.getElementById('userAvatar').textContent = (u.name || 'Dr').split(' ').map(s=>s[0]).slice(0,2).join('');
+      document.getElementById('topAvatar').textContent = document.getElementById('userAvatar').textContent;
+    }
+    showDoctorPage('beranda');
+    if(window.lucide)lucide.createIcons();
+  </script>
+</body>
+</html>

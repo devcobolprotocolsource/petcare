@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Dashboard Admin — VetCare</title>
+  <link rel="stylesheet" href="styles/style.css">
+  <script src="https://unpkg.com/lucide@0.383.0/dist/umd/lucide.js"></script>
+</head>
+<body>
+  <div class="dash-layout">
+    <aside class="sidebar">
+      <div class="sidebar-logo"><div class="logo-mark"><div class="logo-icon"><i data-lucide="shield" style="width:18px;height:18px;color:white"></i></div><div class="logo-text"><strong>VetCare</strong><span>Admin Panel</span></div></div></div>
+      <div class="sidebar-user"><div class="avatar" id="userAvatar">AD</div><div class="user-info"><strong id="userName">Admin Klinik</strong><span>Administrator</span></div></div>
+      <nav class="sidebar-nav">
+        <div class="nav-section-label">Overview</div>
+        <div class="nav-item active" onclick="showAdminPage('beranda')">Beranda</div>
+        <div class="nav-item" onclick="showAdminPage('users')">Manajemen User</div>
+        <div class="nav-item" onclick="showAdminPage('inventory')">Inventory & Produk</div>
+        <div class="nav-item" onclick="showAdminPage('appointments')">Manajemen Janji</div>
+        <div class="nav-item" onclick="showAdminPage('finance')">Keuangan</div>
+        <div class="nav-item" onclick="showAdminPage('reports')">Laporan</div>
+      </nav>
+      <div class="sidebar-footer"><div class="nav-item" onclick="logout()"><i data-lucide="log-out" style="width:16px;height:16px"></i> Keluar</div></div>
+    </aside>
+
+    <div class="dash-main">
+      <div class="dash-topbar"><div class="dash-topbar-left"><h1 id="pageTitle">Beranda</h1><p id="pageSub">Senin, —</p></div><div class="dash-topbar-right"><button class="btn btn-outline btn-sm">Export</button><div class="avatar" id="topAvatar">AD</div></div></div>
+      <div class="dash-content">
+        <div id="admin-beranda">
+          <div class="stats-grid">
+            <div class="stat-card"><div class="stat-icon teal"><i data-lucide="users" style="width:22px;height:22px"></i></div><div class="stat-info"><div class="label">Pasien Hari Ini</div><div class="value">47</div></div></div>
+            <div class="stat-card"><div class="stat-icon green"><i data-lucide="banknote" style="width:22px;height:22px"></i></div><div class="stat-info"><div class="label">Pendapatan Hari Ini</div><div class="value">12.4jt</div></div></div>
+            <div class="stat-card"><div class="stat-icon amber"><i data-lucide="list-ordered" style="width:22px;height:22px"></i></div><div class="stat-info"><div class="label">Antrian Aktif</div><div class="value">18</div></div></div>
+          </div>
+
+          <div class="card" style="margin-top:12px"><div class="card-header"><h3>Appointment Hari Ini</h3></div><div class="card-body">List appointment singkat (demo).</div></div>
+        </div>
+
+        <div id="admin-users" style="display:none">
+          <div class="card"><div class="card-header"><h3>Manajemen User</h3><div style="margin-left:auto"><button class="btn btn-primary btn-sm">Tambah User</button></div></div>
+            <div class="card-body"><div class="table-wrap"><table><thead><tr><th>Email</th><th>Nama</th><th>Peran</th><th>Aksi</th></tr></thead><tbody><tr><td>customer@vetcare.test</td><td>Pelanggan Demo</td><td>Pelanggan</td><td><button class="btn btn-outline btn-sm">Edit</button></td></tr><tr><td>doctor@vetcare.test</td><td>Dokter Demo</td><td>Dokter</td><td><button class="btn btn-outline btn-sm">Edit</button></td></tr></tbody></table></div></div></div>
+        </div>
+
+        <div id="admin-inventory" style="display:none">
+          <div class="card"><div class="card-header"><h3>Inventory & Produk</h3><div style="margin-left:auto"><button class="btn btn-primary btn-sm">Tambah Item</button></div></div>
+            <div class="card-body"><div class="table-wrap"><table><thead><tr><th>SKU</th><th>Nama Produk</th><th>Stok</th><th>Harga</th><th>Aksi</th></tr></thead><tbody><tr><td>VAX-001</td><td>Vaksin Rabies</td><td>24</td><td>Rp 150.000</td><td><button class="btn btn-outline btn-sm">Edit</button></td></tr><tr><td>MED-002</td><td>Antibiotik Salep</td><td>12</td><td>Rp 45.000</td><td><button class="btn btn-outline btn-sm">Edit</button></td></tr></tbody></table></div></div></div>
+        </div>
+
+        <div id="admin-appointments" style="display:none">
+          <div class="card"><div class="card-header"><h3>Manajemen Janji</h3></div>
+            <div class="card-body"><div class="table-wrap"><table><thead><tr><th>Tanggal</th><th>Hewan</th><th>Pemilik</th><th>Dokter</th><th>Status</th><th>Aksi</th></tr></thead><tbody><tr><td>10 Jun 2025, 09.00</td><td>Max</td><td>Sari R.</td><td>drh. Anisa</td><td><span class="badge-status status-confirmed">Confirmed</span></td><td><button class="btn btn-outline btn-sm">Ubah</button></td></tr><tr><td>15 Jun 2025, 14.00</td><td>Bola</td><td>Bagas H.</td><td>drh. Budi</td><td><span class="badge-status status-pending">Pending</span></td><td><button class="btn btn-outline btn-sm">Ubah</button></td></tr></tbody></table></div></div></div>
+        </div>
+
+        <div id="admin-finance" style="display:none"><div class="card"><div class="card-header"><h3>Keuangan</h3></div><div class="card-body">Ringkasan penerimaan dan pengeluaran (demo)</div></div></div>
+
+        <div id="admin-reports" style="display:none"><div class="card"><div class="card-header"><h3>Laporan</h3></div><div class="card-body">Laporan & export (demo)</div></div></div>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="scripts/app.js"></script>
+  <script>
+    const u = ensureAuth(['admin']);
+    if (u) {
+      document.getElementById('userName').textContent = u.name || u.email;
+      document.getElementById('pageSub').textContent = 'Selamat datang, ' + (u.name || u.email);
+      document.getElementById('userAvatar').textContent = (u.name || 'AD').split(' ').map(s=>s[0]).slice(0,2).join('');
+      document.getElementById('topAvatar').textContent = document.getElementById('userAvatar').textContent;
+    }
+    showAdminPage('beranda');
+    if(window.lucide)lucide.createIcons();
+  </script>
+</body>
+</html>
