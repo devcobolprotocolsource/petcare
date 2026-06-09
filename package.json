@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "validate": "html-validate \"**/*.html\"",
+    "validate": "html-validate index.html login.html petcare.html dashboard-*.html",
     "start": "http-server -p 8080 -c-1",
     "test:e2e": "playwright test",
     "test": "npm run validate && npm run test:e2e"

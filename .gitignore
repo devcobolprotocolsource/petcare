@@ -1,0 +1,33 @@
+# Node
+node_modules/
+npm-debug.log*
+# Do not ignore package-lock.json to keep CI reproducible
+# package-lock.json
+
+# Playwright
+.playwright/
+playwright-report/
+
+# Logs
+logs/
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Build
+dist/
+build/
+
+# Misc
+.env
+coverage/
+.cache/
+
+# Static server
+.http-server-cache/
