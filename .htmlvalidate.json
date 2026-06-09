@@ -1,0 +1,10 @@
+{
+  "rules": {
+    "close-order": "off",
+    "element-permitted-content": "off",
+    "no-implicit-close": "off",
+    "unique-landmark": "off",
+    "wcag/h30": "off",
+    "text-content": "off"
+  }
+}
